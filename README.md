@@ -87,3 +87,5 @@ Finally you have to copy all the photographs from the legacy server into the new
 | `...Axis/Employees/Pics` | `c/webserver/axis-assets/uploads` |
 
 If everything concludes without errors, you will be able to see the trainees' photograph in the frontend app.
+![image](https://user-images.githubusercontent.com/7883563/235481076-28ee6dae-bd80-45fb-86f5-cb84698fcf6c.png)
+
