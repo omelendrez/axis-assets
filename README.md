@@ -80,9 +80,9 @@ npm start
 
 The app will show in the terminal when the server is ready.
 
-Finally you have to copy all the photographs from the old server into a server called:
+Finally you have to copy all the photographs from the legacy server into the new server:
 
-| Source                   | Destination                       |
+| Source (Legacy)          | Destination (Axis 2)              |
 | ------------------------ | --------------------------------- |
 | `...Axis/Employees/Pics` | `c/webserver/axis-assets/uploads` |
 
