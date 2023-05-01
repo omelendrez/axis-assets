@@ -24,9 +24,9 @@ const colors = {
   BgWhite: '\x1b[47m'
 }
 
-function createConsoleMessage (styles) {
+function createConsoleMessage(styles, production) {
   return (message) => {
-    if (process.env?.NODE_ENV !== 'production') {
+    if (process.env?.NODE_ENV !== 'production' || production) {
       console.log(
         styles,
         typeof message === 'object' ? JSON.stringify(message) : message,
@@ -38,7 +38,7 @@ function createConsoleMessage (styles) {
 
 const log = {
   error: createConsoleMessage(colors.BgRed),
-  info: createConsoleMessage(colors.BgCyan),
+  info: createConsoleMessage(colors.BgCyan, true),
   success: createConsoleMessage(colors.BgGreen),
   warning: createConsoleMessage(colors.BgYellow)
 }
