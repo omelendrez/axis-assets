@@ -64,6 +64,13 @@ Now you have to move inside the new folder created by the clone action as follow
 cd axis-assets
 ```
 
+Create the folder a folder called `uploads` and then inside that folder, create a new one called `pictures`.
+The path should look like this:
+
+```bash
+c/webserver/axis-assets/uploads/pictures
+```
+
 You should run now:
 
 ```bash
@@ -80,13 +87,11 @@ npm start
 
 The app will show in the terminal when the server is ready.
 
-Finally you have to copy all the photographs from the legacy server into the new server:
+Finally you have to copy all the photographs from the legacy server into the new server folder:
 
-| Source (Legacy)          | Destination (Axis 2)              |
-| ------------------------ | --------------------------------- |
-| `...Axis/Employees/Pics` | `c/webserver/axis-assets/uploads` |
+| Source (Legacy)          | Destination (Axis 2)                       |
+| ------------------------ | ------------------------------------------ |
+| `...Axis/Employees/Pics` | `c/webserver/axis-assets/uploads/pictures` |
 
 If everything concludes without errors, you will be able to see the trainees' photograph in the frontend app.
 <img width="1280" alt="image" src="https://user-images.githubusercontent.com/7883563/235481303-3d093d83-2aff-4b2d-b495-85c3b19385b8.png">
-
-
