@@ -1,9 +1,9 @@
 const express = require('express')
 const cors = require('cors')
-require('dotenv').config()
 const { log } = require('./helpers/log.js')
 const logger = require('morgan')
 const multer = require('multer')
+require('dotenv').config()
 
 const app = express()
 
