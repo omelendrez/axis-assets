@@ -1,5 +1,6 @@
 const express = require('express')
 const cors = require('cors')
+const path = require('path')
 const { log } = require('./helpers/log.js')
 const logger = require('morgan')
 const multer = require('multer')
@@ -64,6 +65,19 @@ app.post('/upload-photo', upload.single(upload), async (req, res) => {
 })
 
 app.use(express.static('uploads'))
+
+app.use((req, res, next) => {
+  const options = {
+    root: path.join(__dirname, 'images')
+  }
+
+  const fileName = 'no-image-icon.png'
+  res.sendFile(fileName, options, function (err) {
+    if (err) {
+      next(err)
+    }
+  })
+})
 
 const PORT = process.env.PORT || 3010
 
