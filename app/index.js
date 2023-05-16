@@ -3,7 +3,7 @@ const cors = require('cors')
 const path = require('path')
 const { log } = require('./helpers/log.js')
 const logger = require('morgan')
-const multer = require('multer')
+
 require('dotenv').config()
 
 const app = express()
@@ -20,53 +20,12 @@ app.use(
   })
 )
 
-const FILE_PATH = 'uploads'
-
-const upload = multer({
-  dest: `${FILE_PATH}/`,
-  limits: {
-    files: 5, // allow up to 5 files per request,
-    fileSize: 2 * 1024 * 1024 // 2 MB (max file size)
-  },
-  fileFilter: (req, file, cb) => {
-    // allow images only
-    if (!file.originalname.match(/\.(jpg|jpeg|png|gif)$/)) {
-      return cb(new Error('Only image are allowed.'), false)
-    }
-    cb(null, true)
-  }
-})
-
-app.post('/upload-photo', upload.single(upload), async (req, res) => {
-  try {
-    const photo = req.file
-
-    // make sure the file is available
-    if (!photo) {
-      res.status(400).send({
-        status: false,
-        data: 'No file is selected.'
-      })
-    } else {
-      // send response
-      res.send({
-        status: true,
-        message: 'File is uploaded.',
-        data: {
-          name: photo.originalname,
-          mimetype: photo.mimetype,
-          size: photo.size
-        }
-      })
-    }
-  } catch (err) {
-    res.status(500).send(err)
-  }
-})
-
 app.use(express.static('uploads'))
 
 app.use((req, res, next) => {
+  if (req.method === 'POST') {
+    return next()
+  }
   const options = {
     root: path.join(__dirname, 'images')
   }
@@ -78,6 +37,8 @@ app.use((req, res, next) => {
     }
   })
 })
+
+require('./routes/upload-routes.js')(app)
 
 const PORT = process.env.PORT || 3010
 
