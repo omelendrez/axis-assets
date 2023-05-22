@@ -6,7 +6,11 @@ module.exports = async (app) => {
 
   const upload = middleware.upload
 
-  router.post('/upload-photo', upload.single('file'), controller.uploadFile)
+  router.post(
+    process.env.UPLOAD_ENDPOINT_ROUTE,
+    upload.single('file'),
+    controller.uploadFile
+  )
 
   app.use('/', router)
 }
