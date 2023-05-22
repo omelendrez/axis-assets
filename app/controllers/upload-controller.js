@@ -20,8 +20,7 @@ exports.uploadFile = async (req, res) => {
     sharp(inputFile)
       .withMetadata()
       .resize({
-        width: parseInt(process.env.PHOTO_WIDTH, 10),
-        height: parseInt(process.env.PHOTO_HEIGHT, 10)
+        width: parseInt(process.env.PHOTO_WIDTH, 10)
       })
       .toFile(outputFile)
       .then(() => {
