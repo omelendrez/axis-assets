@@ -1,6 +1,6 @@
 const express = require('express')
 const cors = require('cors')
-const path = require('path')
+// const path = require('path')
 const { log } = require('./helpers/log.js')
 const logger = require('morgan')
 
@@ -22,23 +22,24 @@ app.use(
 
 app.use(express.static('uploads'))
 
-app.use((req, res, next) => {
-  if (req.method === 'POST') {
-    return next()
-  }
-  const options = {
-    root: path.join(__dirname, 'images')
-  }
+// app.use((req, res, next) => {
+//   if (req.method === 'POST') {
+//     return next()
+//   }
+//   const options = {
+//     root: path.join(__dirname, 'images')
+//   }
 
-  const fileName = 'no-image-icon.png'
-  res.sendFile(fileName, options, function (err) {
-    if (err) {
-      next(err)
-    }
-  })
-})
+//   const fileName = 'no-image-icon.png'
+//   res.sendFile(fileName, options, function (err) {
+//     if (err) {
+//       next(err)
+//     }
+//   })
+// })
 
 require('./routes/upload-routes.js')(app)
+require('./routes/pdf-routes.js')(app)
 
 const PORT = process.env.PORT || 3010
 
