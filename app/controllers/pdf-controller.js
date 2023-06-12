@@ -17,10 +17,20 @@ exports.certificateExists = async (req, res) => {
   })
 }
 
+exports.idCardExists = async (req, res) => {
+  const file = `${process.env.PDF_ID_CARD_FOLDER}/${req.params.fileName}`
+
+  fs.access(file, fs.F_OK, (err) => {
+    if (err) {
+      return res.status(200).send({ exists: false })
+    }
+
+    res.status(200).send({ exists: true })
+  })
+}
+
 exports.createCertificate = async (req, res) => {
   // Create a document
-
-  console.log(req.body)
 
   const { cert_type, full_name, certificate, user } = req.body
 
@@ -30,16 +40,17 @@ exports.createCertificate = async (req, res) => {
       : './models/certificates/certificate.jpg'
 
   const opitoLogo =
-    parseInt(cert_type, 10) === 4 ? './models/certificates/OPITO.jpg' : ''
-
-  console.log(cert_type)
+    parseInt(cert_type, 10) === 4 ? './models/common/OPITO.jpg' : ''
 
   const id = req.params.id
   const file = documentNumber(id)
 
   const fileName = `${process.env.PDF_CERTIFICATE_FOLDER}/${file}.pdf`
-  console.log(fileName)
-  const doc = await new PDFDocument({ size: 'A4', font: 'Times-Roman' })
+
+  const doc = await new PDFDocument({
+    size: [595.28, 841.89],
+    font: 'Times-Roman'
+  })
 
   doc.info.Title = 'Training Certificate'
   doc.info.Author = user.full_name
@@ -102,66 +113,116 @@ exports.createCertificate = async (req, res) => {
     res.status(500).send(err)
   }
 
-  res
-    .status(200)
-    .send({ message: 'Certificate generate successfully', ...doc.info })
+  res.status(200).send({ ...doc.info })
 }
 
 exports.createIdCard = async (req, res) => {
   // Create a document
 
+  const {
+    badge,
+    full_name,
+    user,
+    cert_type,
+    id_card,
+    front_id,
+    back_id,
+    certificate,
+    expiry
+  } = req.body
+
+  const backgroundImage = './models/id_cards/idcard_front.jpg'
+  const signatureImage = './models/id_cards/signature.jpg'
+
+  const opitoLogo =
+    parseInt(cert_type, 10) === 4 ? './models/common/OPITO.jpg' : ''
+
   const id = req.params.id
-  const fileName = `${process.env.PDF_ID_CARD_FOLDER}/${parseInt(
-    id,
-    10
-  ).toString(16)}.pdf`
-  const doc = await new PDFDocument({ size: 'LETTER' })
+  const file = documentNumber(id)
 
-  doc.info.Title = 'Certificate'
-  doc.info.Author = 'User that created the document'
-  doc.info.Subject = 'This is a certificate'
+  const fileName = `${process.env.PDF_ID_CARD_FOLDER}/${file}.pdf`
+  const profilePicture = id_card
+    ? `${process.env.COMPRESS_DEST_FOLDER}/${badge}.jpg`
+    : ''
 
+  const doc = await new PDFDocument({ size: [242, 153], font: 'Helvetica' })
+
+  doc.info.Title = 'Id Card'
+  doc.info.Author = user.full_name
+  doc.info.Subject = `${req.body.badge} - ${req.body.course}`
   doc.info.Producer = 'Axis v2.0'
   doc.info.CreationDate = new Date()
 
   try {
-    // Saving the pdf file in root directory.
     await doc.pipe(fs.createWriteStream(fileName))
 
-    // Adding functionality
-    await doc.text(new Date(), 100, 100)
+    doc.image(backgroundImage, 0, 0, {
+      width: 242,
+      height: 153
+    })
 
-    // Adding an image in the pdf.
+    doc
+      .font('Helvetica-Bold')
+      .fontSize(10)
+      .fillColor('yellow')
+      .text(front_id, 175, 32)
 
-    // doc.image('download3.jpg', {
-    //   fit: [300, 300],
-    //   align: 'center',
-    //   valign: 'center'
-    // })
+    if (opitoLogo) {
+      doc.image(opitoLogo, 198, 48, { width: 38 })
+    }
 
-    await doc
-      .addPage()
-      .fontSize(15)
-      .text('Generating PDF with the help of pdfkit', 100, 100)
+    doc
+      .fontSize(10)
+      .fillColor('white')
+      .text(full_name, 85, 110, { width: 242, height: 153 })
 
-    // Apply some transforms and render an SVG path with the
-    // 'even-odd' fill rule
-    await doc
-      .scale(0.6)
-      .translate(470, -380)
-      .path('M 250,75 L 323,301 131,161 369,161 177,301 z')
-      .fill('red', 'even-odd')
-      .restore()
+    doc.text(`EXP: ${expiry}`, { width: 242, height: 153 })
 
-    // Add some text with annotations
-    await doc
-      .addPage()
-      .fillColor('blue')
-      .text('The link for GeeksforGeeks website', 100, 100)
+    doc.text(certificate, { width: 242, height: 153 })
 
-      .link(100, 100, 160, 27, 'https://www.geeksforgeeks.org/')
+    if (profilePicture) {
+      doc.image(profilePicture, 2, 94, { width: 76 })
+    }
 
-    // Finalize PDF file
+    doc.addPage()
+
+    doc
+      .font('Helvetica')
+      .fillColor('black')
+      .fontSize(7)
+      .text(
+        'This is to certify that the bearer whose name and passport photograph',
+        10,
+        50,
+        { width: 242 }
+      )
+
+    doc.text('appear overleaf has undergone ', { width: 242, continued: true })
+
+    doc.font('Helvetica-Bold').text(`${back_id}.`).moveDown(0.5)
+
+    doc
+      .font('Helvetica')
+      .text('This card remains the property of TOLMANN.')
+      .moveDown(0.5)
+
+    doc
+      .text(
+        'If found, please return to 7B Trans Amadi Industrial Layout, Port Harcourt.',
+        { width: 242, height: 153 }
+      )
+      .moveDown(0.5)
+
+    doc.text('Tel: +234 802 335 0014', { width: 242, height: 153 })
+
+    doc.text('Signature:', 10, 135, {
+      width: 242,
+      height: 153,
+      continued: true
+    })
+
+    doc.image(signatureImage, 40, 115, { width: 48 })
+
     await doc.end()
   } catch (err) {
     console.log(err)
@@ -169,7 +230,5 @@ exports.createIdCard = async (req, res) => {
     res.status(500).send(err)
   }
 
-  res
-    .status(200)
-    .send({ message: 'ID Card generated successfully', ...doc.info })
+  res.status(200).send({ ...doc.info })
 }

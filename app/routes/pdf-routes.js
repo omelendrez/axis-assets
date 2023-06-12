@@ -6,11 +6,20 @@ module.exports = async (app) => {
 
   const pdf = middleware.pdf
 
+  // Certificate
+
   router.post(
     `${process.env.PDF_CERTIFICATE_ROUTE}/:id`,
     pdf.none(),
     controller.createCertificate
   )
+
+  router.get(
+    `${process.env.PDF_CERTIFICATE_ROUTE}/:fileName/exists`,
+    controller.certificateExists
+  )
+
+  // Id Card
 
   router.post(
     `${process.env.PDF_ID_CARD_ROUTE}/:id`,
@@ -19,8 +28,8 @@ module.exports = async (app) => {
   )
 
   router.get(
-    `${process.env.PDF_CERTIFICATE_ROUTE}/:fileName/exists`,
-    controller.certificateExists
+    `${process.env.PDF_ID_CARD_ROUTE}/:fileName/exists`,
+    controller.idCardExists
   )
 
   app.use('/', router)
