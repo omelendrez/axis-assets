@@ -131,6 +131,16 @@ exports.createIdCard = async (req, res) => {
     expiry
   } = req.body
 
+  const profilePicture = id_card
+    ? `${process.env.COMPRESS_DEST_FOLDER}/${badge}.jpg`
+    : ''
+
+  if (!fs.existsSync(profilePicture)) {
+    return res.status(404).send({
+      message: 'Learner picture is required'
+    })
+  }
+
   const backgroundImage = './models/id_cards/idcard_front.jpg'
   const signatureImage = './models/id_cards/signature.jpg'
 
@@ -141,9 +151,6 @@ exports.createIdCard = async (req, res) => {
   const file = documentNumber(id)
 
   const fileName = `${process.env.PDF_ID_CARD_FOLDER}/${file}.pdf`
-  const profilePicture = id_card
-    ? `${process.env.COMPRESS_DEST_FOLDER}/${badge}.jpg`
-    : ''
 
   const doc = await new PDFDocument({ size: [242, 153], font: 'Helvetica' })
 
