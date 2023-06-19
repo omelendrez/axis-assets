@@ -3,6 +3,7 @@ const cors = require('cors')
 // const path = require('path')
 const { log } = require('./helpers/log.js')
 const logger = require('morgan')
+const { listEndpoints } = require('./helpers/routes.js')
 
 require('dotenv').config()
 
@@ -46,3 +47,5 @@ const PORT = process.env.PORT || 3010
 app.listen(PORT, () => {
   log.info(`Server is running on port ${PORT}.`)
 })
+
+listEndpoints(app, '')
