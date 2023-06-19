@@ -69,6 +69,7 @@ exports.uploadLearnerIdCard = async (req, res) => {
         width: parseInt(process.env.LEARNER_ID_WIDTH, 10),
         height: parseInt(process.env.LEARNER_ID_HEIGHT, 10)
       })
+      .rotate(-90, { background: { r: 0, g: 0, b: 0, alpha: 0 } })
       .toFile(outputFile)
       .then(() => {
         fs.rmSync(inputFile, { force: true })
