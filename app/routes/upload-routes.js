@@ -7,9 +7,15 @@ module.exports = async (app) => {
   const upload = middleware.upload
 
   router.post(
-    process.env.PHOTO_ENDPOINT_ROUTE,
+    process.env.PICTURE_ENDPOINT,
     upload.single('file'),
-    controller.uploadFile
+    controller.uploadPicture
+  )
+
+  router.post(
+    process.env.LEARNER_ID_ENDPOINT,
+    upload.single('file'),
+    controller.uploadLearnerIdCard
   )
 
   app.use('/', router)

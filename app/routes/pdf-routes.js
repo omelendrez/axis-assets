@@ -9,26 +9,26 @@ module.exports = async (app) => {
   // Certificate
 
   router.post(
-    `${process.env.PDF_CERTIFICATE_ROUTE}/:id`,
+    `${process.env.PDF_CERTIFICATE_ENDPOINT}/:id`,
     pdf.none(),
     controller.createCertificate
   )
 
   router.get(
-    `${process.env.PDF_CERTIFICATE_ROUTE}/:fileName/exists`,
+    `${process.env.PDF_CERTIFICATE_ENDPOINT}/:fileName/exists`,
     controller.certificateExists
   )
 
   // Id Card
 
   router.post(
-    `${process.env.PDF_ID_CARD_ROUTE}/:id`,
+    `${process.env.PDF_ID_CARD_ENDPOINT}/:id`,
     pdf.none(),
     controller.createIdCard
   )
 
   router.get(
-    `${process.env.PDF_ID_CARD_ROUTE}/:fileName/exists`,
+    `${process.env.PDF_ID_CARD_ENDPOINT}/:fileName/exists`,
     controller.idCardExists
   )
 
