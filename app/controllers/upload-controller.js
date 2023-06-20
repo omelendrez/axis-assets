@@ -48,6 +48,18 @@ exports.uploadPicture = async (req, res) => {
   }
 }
 
+exports.learnerIdCardExists = async (req, res) => {
+  const file = `${process.env.LEARNER_ID_FOLDER}/${req.params.fileName}`
+
+  fs.access(file, fs.F_OK, (err) => {
+    if (err) {
+      return res.status(200).send({ exists: false })
+    }
+
+    res.status(200).send({ exists: true })
+  })
+}
+
 exports.uploadLearnerIdCard = async (req, res) => {
   try {
     const idCard = await req.file

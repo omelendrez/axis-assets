@@ -12,6 +12,11 @@ module.exports = async (app) => {
     controller.uploadPicture
   )
 
+  router.get(
+    `${process.env.LEARNER_ID_ENDPOINT}/:fileName/exists`,
+    controller.learnerIdCardExists
+  )
+
   router.post(
     process.env.LEARNER_ID_ENDPOINT,
     upload.single('file'),
