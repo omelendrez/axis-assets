@@ -3,6 +3,18 @@ const fs = require('fs')
 
 const { log } = require('../helpers/log')
 
+exports.pictureExists = async (req, res) => {
+  const file = `${process.env.PICTURE_FOLDER}/${req.params.fileName}`
+
+  fs.access(file, fs.F_OK, (err) => {
+    if (err) {
+      return res.status(200).send({ exists: false })
+    }
+
+    res.status(200).send({ exists: true })
+  })
+}
+
 exports.uploadPicture = async (req, res) => {
   try {
     const photo = await req.file
