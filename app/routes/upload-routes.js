@@ -28,5 +28,16 @@ module.exports = async (app) => {
     controller.uploadLearnerIdCard
   )
 
+  router.get(
+    `${process.env.SIGNATURE_ENDPOINT}/:fileName/exists`,
+    controller.signatureExists
+  )
+
+  router.post(
+    process.env.SIGNATURE_ENDPOINT,
+    upload.single('file'),
+    controller.uploadSignature
+  )
+
   app.use('/', router)
 }

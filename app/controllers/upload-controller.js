@@ -117,3 +117,61 @@ exports.uploadLearnerIdCard = async (req, res) => {
     res.status(500).send(err)
   }
 }
+
+exports.signatureExists = async (req, res) => {
+  const file = `${process.env.SIGNATURE_FOLDER}/${req.params.fileName}`
+
+  fs.access(file, fs.F_OK, (err) => {
+    if (err) {
+      return res.status(200).send({ exists: false })
+    }
+
+    res.status(200).send({ exists: true })
+  })
+}
+
+exports.uploadSignature = async (req, res) => {
+  try {
+    const signature = await req.file
+    if (!signature) {
+      return res.status(400).send({
+        message: 'No file is selected.'
+      })
+    }
+    const file = signature.originalname
+    const ext = file.split('.')[1]
+    const fileName = `${req.body.name}.${ext}`
+
+    const inputFile = `${process.env.COMPRESS_TEMP_FOLDER}/${fileName}`
+    const outputFile = `${process.env.SIGNATURE_FOLDER}/${fileName}`
+
+    sharp(inputFile)
+      .withMetadata()
+      .resize({
+        width: parseInt(process.env.SIGNATURE_WIDTH, 10),
+        height: parseInt(process.env.SIGNATURE_HEIGHT, 10)
+      })
+      .rotate(-90, { background: { r: 0, g: 0, b: 0, alpha: 0 } })
+      .toFile(outputFile)
+      .then(() => {
+        fs.rmSync(inputFile, { force: true })
+        res.send({
+          message: 'File is uploaded.',
+          data: {
+            name: fileName,
+            mimetype: signature.mimetype,
+            size: signature.size
+          }
+        })
+      })
+      .catch((err) => {
+        console.log(err)
+        log.error(err)
+        res.status(500).send(err)
+      })
+  } catch (err) {
+    console.log(err)
+    log.error(err)
+    res.status(500).send(err)
+  }
+}
