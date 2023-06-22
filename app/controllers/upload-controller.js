@@ -138,25 +138,19 @@ exports.uploadSignature = async (req, res) => {
         message: 'No file is selected.'
       })
     }
-    const file = signature.originalname
-    const ext = file.split('.')[1]
-    const fileName = `${req.body.name}.${ext}`
+    const fileName = req.body.name
 
     const inputFile = `${process.env.COMPRESS_TEMP_FOLDER}/${fileName}`
     const outputFile = `${process.env.SIGNATURE_FOLDER}/${fileName}`
 
     sharp(inputFile)
       .withMetadata()
-      .resize({
-        width: parseInt(process.env.SIGNATURE_WIDTH, 10),
-        height: parseInt(process.env.SIGNATURE_HEIGHT, 10)
-      })
-      .rotate(-90, { background: { r: 0, g: 0, b: 0, alpha: 0 } })
+      .rotate(90, { background: { r: 0, g: 0, b: 0, alpha: 0 } })
       .toFile(outputFile)
       .then(() => {
         fs.rmSync(inputFile, { force: true })
         res.send({
-          message: 'File is uploaded.',
+          message: 'Signature is uploaded.',
           data: {
             name: fileName,
             mimetype: signature.mimetype,
