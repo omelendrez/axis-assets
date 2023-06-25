@@ -5,7 +5,10 @@ exports.generateXLSX = async (req, res) => {
   const source = `${process.env.OPITO_MODELS_PATH}/${opitoSourceFile}`
   const workbook = XLSX.readFile(source)
 
-  const opitoFileName = `Opito Transfer Letter - ${req.params.id}.xlsx`
+  const opitoFileName = process.env.OPITO_FILENAME.replace(
+    '{id}',
+    req.params.id
+  )
   const destination = `${process.env.OPITO_FOLDER}/${opitoFileName}`
 
   const sheet = await workbook.Sheets[workbook.SheetNames[0]]
