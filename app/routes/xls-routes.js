@@ -9,7 +9,7 @@ module.exports = async (app) => {
   const pdf = middleware.pdf
 
   router.post(
-    `${process.env.OPITO_ENDPOINT}/:id`,
+    `${process.env.OPITO_ENDPOINT}`,
     pdf.none(),
 
     controller.generateXLSX

@@ -5,19 +5,21 @@ exports.generateXLSX = async (req, res) => {
   const source = `${process.env.OPITO_MODELS_PATH}/${opitoSourceFile}`
   const workbook = XLSX.readFile(source)
 
-  const opitoFileName = process.env.OPITO_FILENAME.replace(
-    '{id}',
-    req.params.id
-  )
+  const curDate = new Date()
+
+  const dateString = curDate.toISOString().substring(0, 10)
+
+  const opitoFileName = process.env.OPITO_FILENAME.replace('{id}', dateString)
+
   const destination = `${process.env.OPITO_FOLDER}/${opitoFileName}`
 
   const sheet = await workbook.Sheets[workbook.SheetNames[0]]
 
-  const data = req.body
+  const { records } = req.body
 
   const rows = []
 
-  Object.entries(data).forEach(([, v]) => {
+  Object.entries(records).forEach(([, v]) => {
     const row = []
     Object.entries(v).forEach(([, value]) => {
       row.push(value)
@@ -33,6 +35,7 @@ exports.generateXLSX = async (req, res) => {
 
   res.status(200).send({
     message: 'Opito transfer letter generated successfully',
-    file: `${process.env.OPITO_ENDPOINT}/${opitoFileName}`
+    file: `${process.env.OPITO_ENDPOINT}/${opitoFileName}`,
+    opito_file: parseInt(dateString.replace(/-/g, '')).toString(16)
   })
 }
