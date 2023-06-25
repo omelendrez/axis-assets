@@ -22,6 +22,7 @@ app.use(
 )
 
 app.use(express.static('uploads'))
+app.use(express.static('exports'))
 
 require('./routes')(app)
 
