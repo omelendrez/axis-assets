@@ -32,7 +32,16 @@ exports.idCardExists = async (req, res) => {
 exports.createCertificate = async (req, res) => {
   // Create a document
 
-  const { cert_type, full_name, certificate, user } = req.body
+  const {
+    cert_type,
+    full_name,
+    certificate,
+    user,
+    items,
+    issued,
+    expiry,
+    expiry_type
+  } = req.body
 
   const backgroundImage =
     parseInt(cert_type, 10) === 4
@@ -77,11 +86,11 @@ exports.createCertificate = async (req, res) => {
       { align: 'center' }
     )
 
-    row += 20
+    row += 40
     doc.fontSize(22)
     doc.text(full_name, column, row, { align: 'center' })
 
-    row += 25
+    row += 40
 
     doc.fontSize(12)
     doc.text(
@@ -91,20 +100,40 @@ exports.createCertificate = async (req, res) => {
       { align: 'center' }
     )
 
-    row += 400
+    row += 60
+
+    console.log(row)
+
+    doc.fontSize(16)
+
+    items.forEach((i) => {
+      console.log(i.name)
+      doc.text(i.name, column, row, { align: 'center' })
+      row += 40
+    })
+
+    row = 585
+
+    doc.text(`Issuance Date: ${issued}`, column, row, { align: 'center' })
+
+    row += 110
     column += 260
 
     if (opitoLogo) {
       doc.image(opitoLogo, 230, row, { scale: 0.8 })
     }
 
-    row += 20
+    row += 10
+
     doc.fontSize(14)
+
     doc.text(`Cert. No: ${certificate}`, column, row)
 
     row += 20
 
-    doc.text(`Expiry Date: ${'TBD'}`, column, row)
+    if (expiry_type !== 0) {
+      doc.text(`Expiry Date: ${expiry}`, column, row)
+    }
 
     await doc.end()
   } catch (err) {
