@@ -1,6 +1,7 @@
 // Importing modules
 const PDFDocument = require('pdfkit')
 const fs = require('fs')
+const bwipjs = require('bwip-js')
 
 const { log } = require('../helpers/log')
 const { documentNumber } = require('../helpers/converters')
@@ -76,7 +77,7 @@ exports.createCertificate = async (req, res) => {
     })
 
     let row = 245
-    let column = 70
+    let column = 60
 
     doc.fontSize(12)
     doc.text(
@@ -102,8 +103,6 @@ exports.createCertificate = async (req, res) => {
 
     row += 60
 
-    console.log(row)
-
     doc.fontSize(16)
 
     items.forEach((i) => {
@@ -117,13 +116,23 @@ exports.createCertificate = async (req, res) => {
     doc.text(`Issuance Date: ${issued}`, column, row, { align: 'center' })
 
     row += 110
-    column += 260
 
     if (opitoLogo) {
-      doc.image(opitoLogo, 230, row, { scale: 0.8 })
+      doc.image(opitoLogo, 230, 695, { scale: 0.8 })
     }
 
+    // const barcode = await bwipjs.toBuffer({
+    //   bcid: 'ean13',
+    //   text: file,
+    //   includetext: true,
+    //   height: 10,
+    //   textxalign: 'center' // Always good to set this
+    // })
+
+    // await doc.image(barcode, 190, 610)
+
     row += 10
+    column += 270
 
     doc.fontSize(14)
 
@@ -134,6 +143,16 @@ exports.createCertificate = async (req, res) => {
     if (expiry_type !== 0) {
       doc.text(`Expiry Date: ${expiry}`, column, row)
     }
+
+    const qr = await bwipjs.toBuffer({
+      bcid: 'qrcode',
+      text: `${full_name}\nCert.#: ${certificate}\nIssued: ${issued}\nExpiry Date: ${expiry}`,
+      scale: 1,
+      textxalign: 'center' // Always good to set this
+    })
+
+    // await doc.image(qr, 460, 730)
+    await doc.image(qr, 240, 610)
 
     await doc.end()
   } catch (err) {
