@@ -199,6 +199,7 @@ exports.uploadPreviousFOET = async (req, res) => {
 
     sharp(inputFile)
       .withMetadata()
+      // .rotate(-90, { background: { r: 0, g: 0, b: 0, alpha: 0 } })
       .resize({
         width: parseInt(process.env.FOET_WIDTH, 10),
         height: parseInt(process.env.FOET_HEIGHT, 10)
