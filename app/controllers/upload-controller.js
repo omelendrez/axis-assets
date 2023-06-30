@@ -169,3 +169,60 @@ exports.uploadSignature = async (req, res) => {
     res.status(500).send(err)
   }
 }
+
+exports.previouseFOETExists = async (req, res) => {
+  const file = `${process.env.FOET_FOLDER}/${req.params.fileName}`
+
+  fs.access(file, fs.F_OK, (err) => {
+    if (err) {
+      return res.status(200).send({ exists: false })
+    }
+
+    res.status(200).send({ exists: true })
+  })
+}
+
+exports.uploadPreviousFOET = async (req, res) => {
+  try {
+    const photo = await req.file
+    if (!photo) {
+      return res.status(400).send({
+        message: 'No file is selected.'
+      })
+    }
+    const file = photo.originalname
+    const ext = file.split('.')[1]
+    const fileName = `${req.body.name}.${ext}`
+
+    const inputFile = `${process.env.COMPRESS_TEMP_FOLDER}/${fileName}`
+    const outputFile = `${process.env.FOET_FOLDER}/${fileName}`
+
+    sharp(inputFile)
+      .withMetadata()
+      .resize({
+        width: parseInt(process.env.FOET_WIDTH, 10),
+        height: parseInt(process.env.FOET_HEIGHT, 10)
+      })
+      .toFile(outputFile)
+      .then(() => {
+        fs.rmSync(inputFile, { force: true })
+        res.send({
+          message: 'File is uploaded.',
+          data: {
+            name: fileName,
+            mimetype: photo.mimetype,
+            size: photo.size
+          }
+        })
+      })
+      .catch((err) => {
+        console.log(err)
+        log.error(err)
+        res.status(500).send(err)
+      })
+  } catch (err) {
+    console.log(err)
+    log.error(err)
+    res.status(500).send(err)
+  }
+}

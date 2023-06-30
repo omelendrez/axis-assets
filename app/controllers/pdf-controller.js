@@ -58,7 +58,7 @@ exports.createCertificate = async (req, res) => {
   const fileName = `${process.env.PDF_CERTIFICATE_FOLDER}/${file}.pdf`
 
   const doc = await new PDFDocument({
-    size: [595.28, 841.89],
+    size: [595, 842],
     font: 'Times-Roman'
   })
 
@@ -72,8 +72,8 @@ exports.createCertificate = async (req, res) => {
     await doc.pipe(fs.createWriteStream(fileName))
 
     doc.image(backgroundImage, 0, 0, {
-      width: 595.28,
-      height: 841.89
+      width: 595,
+      height: 842
     })
 
     let row = 245
