@@ -32,5 +32,18 @@ module.exports = async (app) => {
     controller.idCardExists
   )
 
+  // Welcome Letter
+
+  router.post(
+    `${process.env.WELCOME_LETTER_ENDPOINT}/:id`,
+    pdf.none(),
+    controller.createIdCard
+  )
+
+  router.get(
+    `${process.env.WELCOME_LETTER_ENDPOINT}/:fileName/exists`,
+    controller.idCardExists
+  )
+
   app.use('/', router)
 }
