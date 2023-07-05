@@ -6,7 +6,6 @@ const bwipjs = require('bwip-js')
 
 const { log } = require('../helpers/log')
 const { documentNumber } = require('../helpers/converters')
-const { text } = require('express')
 
 exports.certificateExists = async (req, res) => {
   const file = `${process.env.PDF_CERTIFICATE_FOLDER}/${req.params.fileName}`
@@ -307,6 +306,8 @@ exports.createWelcomeLetter = async (req, res) => {
 
   const { badge, full_name, start, user, course } = req.body
 
+  const { name: courseName, id_card, validity } = course[0]
+
   const id = req.params.id
   const file = documentNumber(id)
 
@@ -320,7 +321,7 @@ exports.createWelcomeLetter = async (req, res) => {
 
     doc.info.Title = 'Welcome Letter'
     doc.info.Author = user.full_name
-    doc.info.Subject = `${badge} - ${course}`
+    doc.info.Subject = `${badge} - ${courseName}`
     doc.info.Producer = 'Axis v2.0'
     doc.info.CreationDate = new Date()
 
@@ -337,8 +338,6 @@ exports.createWelcomeLetter = async (req, res) => {
 
     row = 176
 
-    console.log(row)
-
     await doc.text('Dear Sir/Madam,', col, row, {
       align: 'left',
       width: textWidth
@@ -347,7 +346,7 @@ exports.createWelcomeLetter = async (req, res) => {
     row += 32
 
     await doc.text(
-      `Thank you for registering the under-listed personnel for the ${course} Course at Tolmann Allied Services Company Limited:`,
+      `Thank you for registering the under-listed personnel for the ${courseName} Course at Tolmann Allied Services Company Limited:`,
       col,
       row,
       {
@@ -371,7 +370,7 @@ exports.createWelcomeLetter = async (req, res) => {
 
     doc.font('Helvetica')
 
-    drawTableRow(doc, col, row, [1, full_name, course, start])
+    drawTableRow(doc, col, row, [1, full_name, courseName, start])
 
     row += 48
 
@@ -436,16 +435,14 @@ exports.createWelcomeLetter = async (req, res) => {
         underline: true
       })
 
-    doc
-      .font('Helvetica-Bold')
-      .text(
-        'IMPORTANT:  Kindly come with a valid means of identification i.e. Driver’s license/Voters card/International Passport/National ID card.',
-        col,
-        doc.y + 10,
-        {
-          underline: true
-        }
-      )
+    doc.text(
+      'IMPORTANT:  Kindly come with a valid means of identification i.e. Driver’s license/Voters card/International Passport/National ID card.',
+      col,
+      doc.y + 10,
+      {
+        underline: true
+      }
+    )
     doc
       .font('Helvetica')
       .text(
@@ -454,6 +451,82 @@ exports.createWelcomeLetter = async (req, res) => {
         doc.y + 10,
         { align: 'justify', width: textWidth }
       )
+
+    doc.addPage()
+
+    row = 48
+
+    await writeHeader(doc, col, row, textWidth)
+
+    row = 176
+
+    doc
+      .text(
+        'Useful Telephone Numbers before/during the training are:  08099901280 (Dorathy) and 08099901281(Mercy).  You can also email ',
+        doc.x,
+        row,
+        { align: 'justify', width: textWidth, continued: true }
+      )
+      .fillColor('#0288d1')
+      .text('admin@tolmann.com', {
+        continued: true,
+        link: 'mailto:admin@tolmann.com',
+        underline: true
+      })
+      .fillColor('#000')
+      .text(' and ', { continued: true, underline: false, link: null })
+      .fillColor('#0288d1')
+      .text('training@tolmann.com', {
+        link: 'mailto:training@tolmann.com',
+        underline: true
+      })
+
+    doc
+      .fillColor('#000')
+      .text(
+        'For further details, please contact the phone numbers/email addresses stated above.',
+        doc.x,
+        doc.y + 10,
+        { align: 'justify', width: textWidth }
+      )
+
+    doc
+      .font('Helvetica-Bold')
+      .text('After Your Training: ', doc.x, doc.y + 10, {
+        align: 'justify',
+        width: textWidth,
+        continued: true
+      })
+      .font('Helvetica')
+      .text('You shall receive a certificate ', { continued: true })
+
+    if (parseInt(id_card, 10) > 0) {
+      doc.text('and ID card ', { continued: true })
+    }
+
+    if (parseInt(validity, 10) > 0) {
+      doc.text(`valid for Four (${validity}) years`, { continued: true })
+    }
+
+    doc.text('.')
+
+    doc.text(
+      'Should you find that you have misplaced any of your belongings when you arrive home, please contact your training coordinator (training@tolmann.com); if the item has been found, the school will contact you to arrange for its return/pick-up.',
+      doc.x,
+      doc.y + 10,
+      { align: 'justify', width: textWidth }
+    )
+
+    doc.text(
+      'Thank you very much, we wish you a pleasant stay and a rewarding course.',
+      doc.x,
+      doc.y + 10,
+      { align: 'justify', width: textWidth }
+    )
+
+    doc.text('Management.', doc.x, doc.y + 30)
+
+    doc.text('Tolmann Allied Services Company Ltd', { oblique: true })
 
     await doc.end()
     await res.status(200).send({ ...doc.info })
