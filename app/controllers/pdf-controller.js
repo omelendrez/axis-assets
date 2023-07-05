@@ -46,16 +46,10 @@ exports.welcomeLetterExists = async (req, res) => {
 exports.createCertificate = async (req, res) => {
   // Create a document
 
-  const {
-    cert_type,
-    full_name,
-    certificate,
-    user,
-    items,
-    issued,
-    expiry,
-    expiry_type
-  } = req.body
+  const { badge, full_name, certificate, user, items, issued, expiry, course } =
+    req.body
+
+  const { cert_type, expiry_type, name: courseName } = course[0]
 
   const backgroundImage =
     parseInt(cert_type, 10) === 4
@@ -77,7 +71,7 @@ exports.createCertificate = async (req, res) => {
 
   doc.info.Title = 'Training Certificate'
   doc.info.Author = user.full_name
-  doc.info.Subject = `${req.body.badge} - ${req.body.course}`
+  doc.info.Subject = `${badge} - ${courseName}`
   doc.info.Producer = 'Axis v2.0'
   doc.info.CreationDate = new Date()
 
@@ -180,17 +174,9 @@ exports.createCertificate = async (req, res) => {
 exports.createIdCard = async (req, res) => {
   // Create a document
 
-  const {
-    badge,
-    full_name,
-    user,
-    cert_type,
-    id_card,
-    front_id,
-    back_id,
-    certificate,
-    expiry
-  } = req.body
+  const { badge, full_name, user, certificate, expiry, course } = req.body
+
+  const { name: courseName, cert_type, id_card, front_id, back_id } = course[0]
 
   const profilePicture = id_card
     ? `${process.env.COMPRESS_DEST_FOLDER}/${badge}.jpg`
@@ -217,7 +203,7 @@ exports.createIdCard = async (req, res) => {
 
   doc.info.Title = 'Id Card'
   doc.info.Author = user.full_name
-  doc.info.Subject = `${req.body.badge} - ${req.body.course}`
+  doc.info.Subject = `${badge} - ${courseName}`
   doc.info.Producer = 'Axis v2.0'
   doc.info.CreationDate = new Date()
 
