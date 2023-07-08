@@ -45,37 +45,44 @@ exports.welcomeLetterExists = async (req, res) => {
 
 exports.createCertificate = async (req, res) => {
   // Create a document
-
-  const { badge, full_name, certificate, user, items, issued, expiry, course } =
-    req.body
-
-  const { cert_type, expiry_type, name: courseName } = course[0]
-
-  const backgroundImage =
-    parseInt(cert_type, 10) === 4
-      ? './models/certificates/certificate_opito.jpg'
-      : './models/certificates/certificate.jpg'
-
-  const opitoLogo =
-    parseInt(cert_type, 10) === 4 ? './models/common/OPITO.jpg' : ''
-
-  const id = req.params.id
-  const file = documentNumber(id)
-
-  const fileName = `${process.env.PDF_CERTIFICATE_FOLDER}/${file}.pdf`
-
-  const doc = await new PDFDocument({
-    size: 'A4',
-    font: 'Times-Roman'
-  })
-
-  doc.info.Title = 'Training Certificate'
-  doc.info.Author = user.full_name
-  doc.info.Subject = `${badge} - ${courseName}`
-  doc.info.Producer = 'Axis v2.0'
-  doc.info.CreationDate = new Date()
-
   try {
+    const {
+      badge,
+      full_name,
+      certificate,
+      user,
+      items,
+      issued,
+      expiry,
+      course
+    } = req.body
+
+    const { cert_type, expiry_type, name: courseName } = course
+
+    const backgroundImage =
+      parseInt(cert_type, 10) === 4
+        ? './models/certificates/certificate_opito.jpg'
+        : './models/certificates/certificate.jpg'
+
+    const opitoLogo =
+      parseInt(cert_type, 10) === 4 ? './models/common/OPITO.jpg' : ''
+
+    const id = req.params.id
+    const file = documentNumber(id)
+
+    const fileName = `${process.env.PDF_CERTIFICATE_FOLDER}/${file}.pdf`
+
+    const doc = await new PDFDocument({
+      size: 'A4',
+      font: 'Times-Roman'
+    })
+
+    doc.info.Title = 'Training Certificate'
+    doc.info.Author = user.full_name
+    doc.info.Subject = `${badge} - ${courseName}`
+    doc.info.Producer = 'Axis v2.0'
+    doc.info.CreationDate = new Date()
+
     await doc.pipe(fs.createWriteStream(fileName))
 
     doc.image(backgroundImage, 0, 0, {
@@ -173,41 +180,40 @@ exports.createCertificate = async (req, res) => {
 
 exports.createIdCard = async (req, res) => {
   // Create a document
-
-  const { badge, full_name, user, certificate, expiry, course } = req.body
-
-  const { name: courseName, cert_type, id_card, front_id, back_id } = course[0]
-
-  const profilePicture = id_card
-    ? `${process.env.COMPRESS_DEST_FOLDER}/${badge}.jpg`
-    : ''
-
-  if (!fs.existsSync(profilePicture)) {
-    return res.status(404).send({
-      message: 'Learner picture is required'
-    })
-  }
-
-  const backgroundImage = './models/id_cards/idcard_front.jpg'
-  const signatureImage = './models/id_cards/signature.jpg'
-
-  const opitoLogo =
-    parseInt(cert_type, 10) === 4 ? './models/common/OPITO.jpg' : ''
-
-  const id = req.params.id
-  const file = documentNumber(id)
-
-  const fileName = `${process.env.PDF_ID_CARD_FOLDER}/${file}.pdf`
-
-  const doc = await new PDFDocument({ size: [242, 153], font: 'Helvetica' })
-
-  doc.info.Title = 'Id Card'
-  doc.info.Author = user.full_name
-  doc.info.Subject = `${badge} - ${courseName}`
-  doc.info.Producer = 'Axis v2.0'
-  doc.info.CreationDate = new Date()
-
   try {
+    const { badge, full_name, user, certificate, expiry, course } = req.body
+
+    const { name: courseName, cert_type, id_card, front_id, back_id } = course
+
+    const profilePicture = id_card
+      ? `${process.env.COMPRESS_DEST_FOLDER}/${badge}.jpg`
+      : ''
+
+    if (!fs.existsSync(profilePicture)) {
+      return res.status(404).send({
+        message: 'Learner picture is required'
+      })
+    }
+
+    const backgroundImage = './models/id_cards/idcard_front.jpg'
+    const signatureImage = './models/id_cards/signature.jpg'
+
+    const opitoLogo =
+      parseInt(cert_type, 10) === 4 ? './models/common/OPITO.jpg' : ''
+
+    const id = req.params.id
+    const file = documentNumber(id)
+
+    const fileName = `${process.env.PDF_ID_CARD_FOLDER}/${file}.pdf`
+
+    const doc = await new PDFDocument({ size: [242, 153], font: 'Helvetica' })
+
+    doc.info.Title = 'Id Card'
+    doc.info.Author = user.full_name
+    doc.info.Subject = `${badge} - ${courseName}`
+    doc.info.Producer = 'Axis v2.0'
+    doc.info.CreationDate = new Date()
+
     await doc.pipe(fs.createWriteStream(fileName))
 
     doc.image(backgroundImage, 0, 0, {
@@ -281,7 +287,7 @@ exports.createIdCard = async (req, res) => {
 
     res.status(200).send({ ...doc.info })
   } catch (err) {
-    console.log(err)
+    console.log(req.body)
     log.error(err)
     res.status(500).send(err)
   }
@@ -290,16 +296,16 @@ exports.createIdCard = async (req, res) => {
 exports.createWelcomeLetter = async (req, res) => {
   // Create a document
 
-  const { badge, full_name, start, user, course } = req.body
-
-  const { name: courseName, id_card, validity } = course[0]
-
-  const id = req.params.id
-  const file = documentNumber(id)
-
-  const fileName = `${process.env.WELCOME_LETTER_FOLDER}/${file}.pdf`
-
   try {
+    const { badge, full_name, start, user, course } = req.body
+
+    const { name: courseName, id_card, validity } = course
+
+    const id = req.params.id
+    const file = documentNumber(id)
+
+    const fileName = `${process.env.WELCOME_LETTER_FOLDER}/${file}.pdf`
+
     const doc = await new PDFDocument({
       size: 'A4',
       font: 'Helvetica'
@@ -517,7 +523,8 @@ exports.createWelcomeLetter = async (req, res) => {
     await doc.end()
     await res.status(200).send({ ...doc.info })
   } catch (err) {
-    console.log(err)
+    console.log(req.body)
+
     log.error(err)
     res.status(500).send(err)
   }
