@@ -1,11 +1,12 @@
+require('dotenv').config()
+
 const express = require('express')
 const cors = require('cors')
 // const path = require('path')
-const { log } = require('./helpers/log.js')
+const { log } = require('./helpers/log')
 const logger = require('morgan')
-const { listEndpoints } = require('./helpers/routes.js')
-
-require('dotenv').config()
+const { listEndpoints } = require('./helpers/routes')
+const EmailService = require('./services/EmailService')
 
 const app = express()
 
@@ -32,6 +33,13 @@ app.listen(PORT, () => {
   log.info(`Server is running on port ${PORT}.`)
 })
 
+const emailService = new EmailService()
+
 if (process.env.NODE_ENV !== 'production') {
   listEndpoints(app, '')
 }
+
+emailService.on('emailSent', (email) => {
+  const { to, subject } = email
+  console.log(`Email sent to ${to} with subject ${subject}`)
+})
