@@ -120,7 +120,6 @@ exports.createCertificate = async (req, res) => {
     doc.fontSize(16)
 
     items.forEach((i) => {
-      console.log(i.name)
       doc.text(i.name, column, row, { align: 'center' })
       row += 40
     })
@@ -186,7 +185,7 @@ exports.createIdCard = async (req, res) => {
     const { name: courseName, cert_type, id_card, front_id, back_id } = course
 
     const profilePicture = id_card
-      ? `${process.env.COMPRESS_DEST_FOLDER}/${badge}.jpg`
+      ? `${process.env.PICTURE_FOLDER}/${badge}.jpg`
       : ''
 
     if (!fs.existsSync(profilePicture)) {
