@@ -2,7 +2,7 @@ const XLSX = require('xlsx')
 
 exports.generateXLSX = async (req, res) => {
   const opitoSourceFile = 'OPITO TRANSFER LETTER.xlsx'
-  const source = `${process.env.OPITO_MODELS_PATH}/${opitoSourceFile}`
+  const source = `${process.env.OPITO_TEMPLATES_PATH}/${opitoSourceFile}`
   const workbook = XLSX.readFile(source)
 
   const curDate = new Date()

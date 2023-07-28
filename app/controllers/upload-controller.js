@@ -228,3 +228,50 @@ exports.uploadPreviousFOET = async (req, res) => {
     res.status(500).send(err)
   }
 }
+
+exports.uploadTemplate = async (req, res) => {
+  try {
+    const photo = await req.file
+    if (!photo) {
+      return res.status(400).send({
+        message: 'No file is selected.'
+      })
+    }
+    const file = photo.originalname
+    const ext = file.split('.')[1]
+    const fileName = `${req.body.name}.${ext}`
+
+    const inputFile = `${process.env.COMPRESS_TEMP_FOLDER}/${fileName}`
+    const outputFile = `${process.env.FOET_FOLDER}/${fileName}`
+
+    sharp(inputFile)
+      .withMetadata()
+
+      // .rotate(-90, { background: { r: 0, g: 0, b: 0, alpha: 0 } })
+      .resize({
+        fit: sharp.fit.contain,
+        height: parseInt(process.env.FOET_HEIGHT, 10)
+      })
+      .toFile(outputFile)
+      .then(() => {
+        fs.rmSync(inputFile, { force: true })
+        res.send({
+          message: 'File is uploaded.',
+          data: {
+            name: fileName,
+            mimetype: photo.mimetype,
+            size: photo.size
+          }
+        })
+      })
+      .catch((err) => {
+        console.log(err)
+        log.error(err)
+        res.status(500).send(err)
+      })
+  } catch (err) {
+    console.log(err)
+    log.error(err)
+    res.status(500).send(err)
+  }
+}

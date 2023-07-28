@@ -3,4 +3,5 @@ module.exports = (app) => {
   require('./upload-routes')(app)
   require('./xls-routes')(app)
   require('./email-routes')(app)
+  require('./template-routes')(app)
 }

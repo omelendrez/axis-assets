@@ -61,11 +61,11 @@ exports.createCertificate = async (req, res) => {
 
     const backgroundImage =
       parseInt(cert_type, 10) === 4
-        ? './models/certificates/certificate_opito.jpg'
-        : './models/certificates/certificate.jpg'
+        ? './templates/certificates/certificate_opito.jpg'
+        : './templates/certificates/certificate.jpg'
 
     const opitoLogo =
-      parseInt(cert_type, 10) === 4 ? './models/common/OPITO.jpg' : ''
+      parseInt(cert_type, 10) === 4 ? './templates/common/OPITO.jpg' : ''
 
     const id = req.params.id
     const file = documentNumber(id)
@@ -195,11 +195,11 @@ exports.createIdCard = async (req, res) => {
       })
     }
 
-    const backgroundImage = './models/id_cards/idcard_front.jpg'
-    const signatureImage = './models/id_cards/signature.jpg'
+    const backgroundImage = './templates/id_cards/idcard_front.jpg'
+    const signatureImage = './templates/id_cards/signature.jpg'
 
     const opitoLogo =
-      parseInt(cert_type, 10) === 4 ? './models/common/OPITO.jpg' : ''
+      parseInt(cert_type, 10) === 4 ? './templates/common/OPITO.jpg' : ''
 
     const id = req.params.id
     const file = documentNumber(id)
@@ -531,7 +531,7 @@ exports.createWelcomeLetter = async (req, res) => {
 }
 
 const writeHeader = async (doc, col, row, textWidth) => {
-  const logo = './models/welcome_letter/logo.png'
+  const logo = './templates/welcome_letter/logo.png'
 
   await doc.image(logo, col, row, {
     width: 48,
