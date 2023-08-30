@@ -29,17 +29,6 @@ module.exports = async (app) => {
   )
 
   router.get(
-    `${process.env.SIGNATURE_ENDPOINT}/:fileName/exists`,
-    controller.signatureExists
-  )
-
-  router.post(
-    process.env.SIGNATURE_ENDPOINT,
-    upload.single('file'),
-    controller.uploadSignature
-  )
-
-  router.get(
     `${process.env.FOET_ENDPOINT}/:fileName/exists`,
     controller.previouseFOETExists
   )
