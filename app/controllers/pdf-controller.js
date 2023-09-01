@@ -81,10 +81,19 @@ exports.createCertificate = async (req, res) => {
 exports.createIdCard = async (req, res) => {
   try {
     const {
+      badge,
       course: { cert_type }
     } = req.body
 
     let generateId = null
+
+    const profilePicture = `${process.env.PICTURE_FOLDER}/${badge}.jpg`
+
+    if (!fs.existsSync(profilePicture)) {
+      return res.status(404).send({
+        message: 'Learner picture is required'
+      })
+    }
 
     switch (parseInt(cert_type, 10)) {
       case 1:
@@ -101,11 +110,9 @@ exports.createIdCard = async (req, res) => {
         break
     }
 
-    const doc = await generateId(req)
-
+    const doc = await generateId(req, res)
     res.status(200).send({ ...doc.info })
   } catch (err) {
-    console.log(req.body)
     log.error(err)
     res.status(500).send(err)
   }
