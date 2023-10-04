@@ -6,9 +6,8 @@ const SUB_HEADER =
   'Learner Count,OPITO Lerner No, Vantage ID, First Name, Last Name, DOB, Forward Date'
 
 const createFile = async (data) => {
-  console.log(data)
   const { id, start, end, product_code, records } = data
-  const file = `${id.split(' ')[0]} ${product_code}`
+  const file = `${id.split(' ')[0]}_${product_code}`
 
   const fileName = `${process.env.CSV_FOLDER}/${file}.csv`
   const responseFileName = `${process.env.CSV_ENDPOINT}/${file}.csv`

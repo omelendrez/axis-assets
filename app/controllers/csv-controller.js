@@ -1,5 +1,5 @@
-const { log } = require('../helpers/log')
 const { createFile } = require('../middleware/csv-middleware')
+const { log } = require('../helpers/log')
 
 exports.createCSVFile = async (req, res) => {
   try {
