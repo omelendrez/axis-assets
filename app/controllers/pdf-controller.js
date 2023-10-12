@@ -5,8 +5,16 @@ const fs = require('fs')
 
 const { log } = require('../helpers/log')
 
-const { standard, nimasa, opito } = require('../middleware/document-middleware')
-const { standardId } = require('../middleware/id-card-middleware')
+const { CERT_TYPE } = require('../helpers/constants')
+
+const {
+  generateStandardCertificate,
+  generateNimasaCertificate
+} = require('../middleware/certificate-middleware')
+const {
+  generateStandardIdCard,
+  generateOpitoIdCard
+} = require('../middleware/id-card-middleware')
 const { welcome } = require('../middleware/welcome-middleware')
 
 exports.certificateExists = async (req, res) => {
@@ -51,24 +59,21 @@ exports.createCertificate = async (req, res) => {
       course: { cert_type }
     } = req.body
 
-    let generateDoc = null
+    let generateCertificate = null
 
     switch (parseInt(cert_type, 10)) {
-      case 1:
-        generateDoc = standard
+      case CERT_TYPE.STANDARD:
+        generateCertificate = generateStandardCertificate
         break
-      case 2:
-        // generateDoc = nimasa
+      case CERT_TYPE.NIMASA:
+        generateCertificate = generateNimasaCertificate
         break
-      case 3:
-        // generateDoc = forklift
-        break
-      case 4:
-        generateDoc = opito
+      case CERT_TYPE.FORKLIFT:
+        // generateCertificate = forklift
         break
     }
 
-    const doc = await generateDoc(req)
+    const doc = await generateCertificate(req)
 
     res.status(200).send({ ...doc.info })
   } catch (err) {
@@ -85,7 +90,7 @@ exports.createIdCard = async (req, res) => {
       course: { cert_type }
     } = req.body
 
-    let generateId = null
+    let generateIdCard = null
 
     const profilePicture = `${process.env.PICTURE_FOLDER}/${badge}.jpg`
 
@@ -96,21 +101,16 @@ exports.createIdCard = async (req, res) => {
     }
 
     switch (parseInt(cert_type, 10)) {
-      case 1:
-        generateId = standardId
+      case CERT_TYPE.STANDARD:
+        generateIdCard = generateStandardIdCard
         break
-      case 2:
-        generateId = nimasa
-        break
-      case 3:
-        // generateId = forklift
-        break
-      case 4:
-        generateId = standardId
+      case CERT_TYPE.OPITO:
+        generateIdCard = generateOpitoIdCard
         break
     }
 
-    const doc = await generateId(req, res)
+    const doc = await generateIdCard(req, res)
+
     res.status(200).send({ ...doc.info })
   } catch (err) {
     log.error(err)
