@@ -98,9 +98,19 @@ const generateStandardCertificate = async (req) => {
     doc.text(`Expiry Date: ${expiry}`, column, row)
   }
 
+  const text = [full_name]
+
+  text.push(`Cert.#: ${certificate}`)
+
+  text.push(`Issued: ${issued}`)
+
+  if (expiry) {
+    text.push(`Expiry Date: ${expiry}`)
+  }
+
   const qr = await bwipjs.toBuffer({
     bcid: 'qrcode',
-    text: `${full_name}\nCert.#: ${certificate}\nIssued: ${issued}\nExpiry Date: ${expiry}`,
+    text: text.join('\n'),
     scale: 1,
     textxalign: 'center' // Always good to set this
   })
