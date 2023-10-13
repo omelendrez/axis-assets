@@ -40,7 +40,7 @@ module.exports = async (app) => {
   )
 
   router.post(
-    `${process.env.PDF_CERTIFICATE_ENDPOINT}/:id/upload`,
+    `${process.env.OPITO_ENDPOINT}/upload`,
     upload.single('file'),
     controller.uploadCertificate
   )

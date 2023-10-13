@@ -226,38 +226,26 @@ exports.uploadTemplate = async (req, res) => {
 
 exports.uploadCertificate = async (req, res) => {
   try {
-    const photo = await req.file
-    if (!photo) {
+    const document = await req.file
+    if (!document) {
       return res.status(400).send({
         message: 'No file is selected.'
       })
     }
-    const file = photo.originalname
+    const file = document.originalname
     const ext = file.split('.')[1]
     const fileName = `${req.body.name}.${ext}`
 
     const inputFile = `${process.env.COMPRESS_TEMP_FOLDER}/${fileName}`
-    const outputFile = `${process.env.OPITO_FOLDER}/${fileName}`
+    const outputFile = `${process.env.PDF_CERTIFICATE_FOLDER}/${fileName}`
 
-    sharp(inputFile)
-      .withMetadata()
-      .toFile(outputFile)
-      .then(() => {
-        fs.rmSync(inputFile, { force: true })
-        res.send({
-          message: 'File is uploaded.',
-          data: {
-            name: fileName,
-            mimetype: photo.mimetype,
-            size: photo.size
-          }
-        })
+    fs.rename(inputFile, outputFile, () =>
+      res.send({
+        message: 'Document uploaded successfully',
+        inputFile,
+        outputFile
       })
-      .catch((err) => {
-        console.log(err)
-        log.error(err)
-        res.status(500).send(err)
-      })
+    )
   } catch (err) {
     console.log(err)
     log.error(err)
