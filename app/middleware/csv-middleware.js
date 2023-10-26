@@ -3,7 +3,7 @@ const { appendFileSync } = require('fs')
 const HEADER =
   'Start Date, End Date, Centre Code, Product Code, Booking Ref No,,'
 const SUB_HEADER =
-  'Learner Count,OPITO Lerner No, Vantage ID, First Name, Last Name, DOB, Forward Date'
+  'Learner Count,OPITO Learner No, Vantage ID, First Name, Last Name, DOB, Forward Date'
 
 const createFile = async (data) => {
   const { id, start, end, product_code, records } = data
