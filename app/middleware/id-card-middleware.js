@@ -26,6 +26,8 @@ const generateStandardIdCard = async (req) => {
 
     const fileName = `${process.env.PDF_ID_CARD_FOLDER}/${file}.pdf`
 
+    const qrPath = `${process.env.TOLMAN_WEBSITE_PATH}/${file}.pdf`
+
     const doc = await new PDFDocument({ size: [242, 153], font: 'Helvetica' })
 
     doc.info.Title = 'Id Card'
@@ -98,6 +100,14 @@ const generateStandardIdCard = async (req) => {
     })
 
     doc.image(signatureImage, 40, 115, { width: 48 })
+
+    const qr = await bwipjs.toBuffer({
+      bcid: 'qrcode',
+      text: qrPath,
+      scale: 1
+    })
+
+    await doc.image(qr, 140, 55)
 
     await doc.end()
 

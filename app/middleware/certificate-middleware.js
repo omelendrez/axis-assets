@@ -17,6 +17,8 @@ const generateStandardCertificate = async (req) => {
 
   const fileName = `${process.env.PDF_CERTIFICATE_FOLDER}/${file}.pdf`
 
+  const qrPath = `${process.env.TOLMAN_WEBSITE_PATH}/${file}.pdf`
+
   const doc = await new PDFDocument({
     size: 'A4',
     font: 'Times-Roman'
@@ -98,19 +100,9 @@ const generateStandardCertificate = async (req) => {
     doc.text(`Expiry Date: ${expiry}`, column, row)
   }
 
-  const text = [full_name]
-
-  text.push(`Cert.#: ${certificate}`)
-
-  text.push(`Issued: ${issued}`)
-
-  if (expiry) {
-    text.push(`Expiry Date: ${expiry}`)
-  }
-
   const qr = await bwipjs.toBuffer({
     bcid: 'qrcode',
-    text: text.join('\n'),
+    text: qrPath,
     scale: 1,
     textxalign: 'center' // Always good to set this
   })
@@ -136,6 +128,8 @@ const generateNimasaCertificate = async (req) => {
 
   const fileName = `${process.env.PDF_CERTIFICATE_FOLDER}/${file}.pdf`
 
+  const qrPath = `${process.env.TOLMAN_WEBSITE_PATH}/${file}.pdf`
+
   const doc = await new PDFDocument({
     size: 'A4',
     font: 'Times-Roman'
@@ -219,7 +213,7 @@ const generateNimasaCertificate = async (req) => {
 
   const qr = await bwipjs.toBuffer({
     bcid: 'qrcode',
-    text: `${full_name}\nCert.#: ${certificate}\nIssued: ${issued}\nExpiry Date: ${expiry}`,
+    text: qrPath,
     scale: 1,
     textxalign: 'center' // Always good to set this
   })
