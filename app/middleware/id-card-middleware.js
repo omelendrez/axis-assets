@@ -71,7 +71,7 @@ const generateStandardIdCard = async (req) => {
       .text(
         'This is to certify that the bearer whose name and passport photograph',
         10,
-        50,
+        30,
         { width: 242 }
       )
 
