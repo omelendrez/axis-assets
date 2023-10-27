@@ -107,7 +107,7 @@ const generateStandardIdCard = async (req) => {
       scale: 1
     })
 
-    await doc.image(qr, 170, 85)
+    await doc.image(qr, 165, 80)
 
     await doc.end()
 
