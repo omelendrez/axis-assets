@@ -19,7 +19,9 @@ const createFile = async (data) => {
 
   records.forEach((r, i) =>
     csvContent.push(
-      `${i + 1},,,${r.first_name}, ${r.last_name}, ${r.birth_date},`
+      `${i + 1},,,${r.first_name}, ${r.last_name}, ${r.birth_date},${
+        r.prev_expiry || ''
+      }`
     )
   )
 
