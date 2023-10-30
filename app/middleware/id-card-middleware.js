@@ -5,6 +5,9 @@ const bwipjs = require('bwip-js')
 const { documentNumber } = require('../helpers/converters')
 const { OPITO_HUB_URL } = require('../helpers/constants')
 
+const cardWidth = 242
+const cardHeight = 153
+
 const generateStandardIdCard = async (req) => {
   try {
     const {
@@ -28,7 +31,10 @@ const generateStandardIdCard = async (req) => {
 
     const qrPath = `${process.env.TOLMAN_WEBSITE_PATH}/${file}.pdf`
 
-    const doc = await new PDFDocument({ size: [242, 153], font: 'Helvetica' })
+    const doc = await new PDFDocument({
+      size: [cardWidth, cardHeight],
+      font: 'Helvetica'
+    })
 
     doc.info.Title = 'Id Card'
     doc.info.Author = fullName
@@ -39,8 +45,8 @@ const generateStandardIdCard = async (req) => {
     await doc.pipe(fs.createWriteStream(fileName))
 
     doc.image(backgroundImage, 0, 0, {
-      width: 242,
-      height: 153
+      width: cardWidth,
+      height: cardHeight
     })
 
     doc
@@ -52,11 +58,11 @@ const generateStandardIdCard = async (req) => {
     doc
       .fontSize(10)
       .fillColor('white')
-      .text(full_name, 85, 110, { width: 242, height: 153 })
+      .text(full_name, 85, 110, { width: cardWidth, height: cardHeight })
 
-    doc.text(`EXP: ${expiry}`, { width: 242, height: 153 })
+    doc.text(`EXP: ${expiry}`, { width: cardWidth, height: cardHeight })
 
-    doc.text(certificate, { width: 242, height: 153 })
+    doc.text(certificate, { width: cardWidth, height: cardHeight })
 
     if (profilePicture && fs.existsSync(profilePicture)) {
       doc.image(profilePicture, 2, 94, { width: 76 })
@@ -71,43 +77,51 @@ const generateStandardIdCard = async (req) => {
       .text(
         'This is to certify that the bearer whose name and passport photograph',
         10,
-        30,
-        { width: 242 }
+        70,
+        { width: cardWidth }
       )
 
-    doc.text('appear overleaf has undergone ', { width: 242, continued: true })
+    doc.text('appear overleaf has undergone ', {
+      width: cardWidth,
+      height: cardHeight,
+      continued: true
+    })
 
     doc.font('Helvetica-Bold').text(`${back_id_text}.`).moveDown(0.5)
-
     doc
       .font('Helvetica')
-      .text('This card remains the property of TOLMANN.')
+      .text('This card remains the property of TOLMANN.', {
+        width: cardWidth,
+        height: cardHeight
+      })
       .moveDown(0.5)
 
     doc
       .text(
         'If found, please return to 7B Trans Amadi Industrial Layout, Port Harcourt.',
-        { width: 242, height: 153 }
+        { width: 180, height: cardHeight, continued: true }
       )
-      .moveDown(0.5)
+      .text('Tel: +234 802 335 0014', {
+        width: cardWidth,
+        height: cardHeight
+      })
 
-    doc.text('Tel: +234 802 335 0014', { width: 242, height: 153 })
-
-    doc.text('Signature:', 10, 135, {
-      width: 242,
-      height: 153,
-      continued: true
-    })
-
-    doc.image(signatureImage, 40, 115, { width: 48 })
+    doc
+      .text('Signature:', 10, 140, {
+        width: cardWidth,
+        height: cardHeight
+      })
+      .image(signatureImage, 40, 120, { width: 48 })
 
     const qr = await bwipjs.toBuffer({
       bcid: 'qrcode',
       text: qrPath,
-      scale: 1
+      scale: 1,
+      height: 20,
+      width: 20
     })
 
-    await doc.image(qr, 165, 80)
+    await doc.image(qr, 190, 100)
 
     await doc.end()
 
@@ -142,7 +156,10 @@ const generateOpitoIdCard = async (req) => {
 
     const fileName = `${process.env.PDF_ID_CARD_FOLDER}/${file}.pdf`
 
-    const doc = await new PDFDocument({ size: [242, 153], font: 'Helvetica' })
+    const doc = await new PDFDocument({
+      size: [cardWidth, cardHeight],
+      font: 'Helvetica'
+    })
 
     doc.info.Title = 'Id Card'
     doc.info.Author = fullName
@@ -153,8 +170,8 @@ const generateOpitoIdCard = async (req) => {
     await doc.pipe(fs.createWriteStream(fileName))
 
     doc.image(backgroundImage, 0, 0, {
-      width: 242,
-      height: 153
+      width: cardWidth,
+      height: cardHeight
     })
 
     doc
@@ -166,13 +183,13 @@ const generateOpitoIdCard = async (req) => {
     doc.image(opitoLogo, 198, 48, { width: 38 })
 
     doc
-      .fontSize(10)
+      .fontSize(7)
       .fillColor('white')
-      .text(full_name, 85, 110, { width: 242, height: 153 })
+      .text(full_name, 85, 110, { width: cardWidth, height: cardHeight })
 
-    doc.text(`EXP: ${expiry}`, { width: 242, height: 153 })
+    doc.text(`EXP: ${expiry}`, { width: cardWidth, height: cardHeight })
 
-    doc.text(certificate, { width: 242, height: 153 })
+    doc.text(certificate, { width: cardWidth, height: cardHeight })
 
     if (profilePicture && fs.existsSync(profilePicture)) {
       doc.image(profilePicture, 2, 94, { width: 76 })
@@ -187,45 +204,54 @@ const generateOpitoIdCard = async (req) => {
       .text(
         'This is to certify that the bearer whose name and passport photograph',
         10,
-        10,
-        { width: 242 }
+        70,
+        { width: cardWidth }
       )
 
-    doc.text('appear overleaf has undergone ', { width: 242, continued: true })
+    doc.text('appear overleaf has undergone ', {
+      width: cardWidth,
+      height: cardHeight,
+      continued: true
+    })
 
     doc.font('Helvetica-Bold').text(`${back_id_text}.`).moveDown(0.5)
 
     doc
       .font('Helvetica')
-      .text('This card remains the property of TOLMANN.')
+      .text('This card remains the property of TOLMANN.', {
+        width: cardWidth,
+        height: cardHeight
+      })
       .moveDown(0.5)
 
     doc
       .text(
         'If found, please return to 7B Trans Amadi Industrial Layout, Port Harcourt.',
-        { width: 242, height: 153 }
+        { width: 180, height: cardHeight, continued: true }
       )
-      .moveDown(0.5)
+      .text('Tel: +234 802 335 0014', {
+        width: cardWidth,
+        height: cardHeight
+      })
 
-    doc.text('Tel: +234 802 335 0014', { width: 242, height: 153 })
-
-    doc.text('Signature:', 10, 135, {
-      width: 242,
-      height: 153,
-      continued: true
-    })
-
-    doc.image(signatureImage, 40, 115, { width: 48 })
+    doc
+      .text('Signature:', 10, 140, {
+        width: cardWidth,
+        height: cardHeight
+      })
+      .image(signatureImage, 40, 120, { width: 48 })
 
     const qr = await bwipjs.toBuffer({
       bcid: 'qrcode',
       text: `${OPITO_HUB_URL.replace('{surname}', surname)
         .replace('{date}', opito_expiry)
         .replace('{certificate}', certificate)}`,
-      scale: 1
+      scale: 1,
+      height: 20,
+      width: 20
     })
 
-    await doc.image(qr, 140, 55)
+    await doc.image(qr, 190, 100)
 
     await doc.end()
 
