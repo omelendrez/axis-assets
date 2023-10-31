@@ -56,11 +56,14 @@ const generateStandardIdCard = async (req) => {
       .text(front_id_text, 175, 32)
 
     doc
-      .fontSize(10)
+      .fontSize(8)
       .fillColor('white')
       .text(full_name, 85, 110, { width: cardWidth, height: cardHeight })
+      .moveDown(0.5)
 
-    doc.text(`EXP: ${expiry}`, { width: cardWidth, height: cardHeight })
+    doc
+      .text(`EXP: ${expiry}`, { width: cardWidth, height: cardHeight })
+      .moveDown(0.5)
 
     doc.text(certificate, { width: cardWidth, height: cardHeight })
 
