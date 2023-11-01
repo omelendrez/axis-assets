@@ -118,13 +118,6 @@ const welcome = async (req) => {
       { align: 'justify', width: textWidth }
     )
 
-  doc.text(
-    'The course is a mix of theory and practical sessions; you will be assessed based on your understanding of the class session and your participation during the practical.',
-    doc.x,
-    doc.y + 10,
-    { align: 'justify', width: textWidth }
-  )
-
   doc
     .font('Helvetica-Bold')
     .text('Training starts at exactly 8am prompt.', col, doc.y + 10, {
