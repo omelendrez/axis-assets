@@ -67,15 +67,16 @@ const generateStandardCertificate = async (req) => {
 
   doc.fontSize(18).text(courseName, column, row, { align: 'center' })
 
-  row += 30
+  if (items) {
+    row += 30
 
-  doc.fontSize(16)
+    doc.fontSize(16)
 
-  items.forEach((i) => {
-    doc.text(i.name, column, row, { align: 'center' })
-    row += 40
-  })
-
+    items.forEach((i) => {
+      doc.text(i.name, column, row, { align: 'center' })
+      row += 40
+    })
+  }
   row = 585
 
   doc.text(`Issuance Date: ${issued}`, column, row, { align: 'center' })
