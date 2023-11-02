@@ -40,29 +40,34 @@ const generateStandardCertificate = async (req) => {
   let row = 245
   let column = 60
 
-  doc.fontSize(12)
-  doc.text(
-    'In honor of your outstanding performance and dedication, we gladly present this to',
-    column,
-    row,
-    { align: 'center' }
-  )
+  doc
+    .fontSize(12)
+    .text(
+      'In honor of your outstanding performance and dedication, we gladly present this to',
+      column,
+      row,
+      { align: 'center' }
+    )
 
   row += 40
-  doc.fontSize(22)
-  doc.text(full_name, column, row, { align: 'center' })
+  doc.fontSize(22).text(full_name, column, row, { align: 'center' })
 
   row += 40
 
-  doc.fontSize(12)
-  doc.text(
-    'having been assessed against and met the learning outcomes for the training requirements on',
-    column,
-    row,
-    { align: 'center' }
-  )
+  doc
+    .fontSize(12)
+    .text(
+      'having been assessed against and met the learning outcomes for the training requirements on',
+      column,
+      row,
+      { align: 'center' }
+    )
 
-  row += 60
+  row += 30
+
+  doc.fontSize(18).text(courseName, column, row, { align: 'center' })
+
+  row += 30
 
   doc.fontSize(16)
 
