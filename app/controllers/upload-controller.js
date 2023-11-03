@@ -252,3 +252,44 @@ exports.uploadCertificate = async (req, res) => {
     res.status(500).send(err)
   }
 }
+
+exports.paymentExists = async (req, res) => {
+  const file = `${process.env.PAYMENT_FOLDER}/${req.params.fileName}`
+
+  fs.access(file, fs.F_OK, (err) => {
+    if (err) {
+      return res.status(200).send({ exists: false })
+    }
+
+    res.status(200).send({ exists: true })
+  })
+}
+
+exports.uploadPayment = async (req, res) => {
+  try {
+    const document = await req.file
+    if (!document) {
+      return res.status(400).send({
+        message: 'No file is selected.'
+      })
+    }
+    const file = document.originalname
+    const ext = file.split('.')[1]
+    const fileName = `${req.body.name}.${ext}`
+
+    const inputFile = `${process.env.COMPRESS_TEMP_FOLDER}/${fileName}`
+    const outputFile = `${process.env.PAYMENT_FOLDER}/${fileName}`
+
+    fs.rename(inputFile, outputFile, () =>
+      res.send({
+        message: 'Document uploaded successfully',
+        inputFile,
+        outputFile
+      })
+    )
+  } catch (err) {
+    console.log(err)
+    log.error(err)
+    res.status(500).send(err)
+  }
+}

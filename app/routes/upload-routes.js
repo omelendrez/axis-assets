@@ -39,10 +39,15 @@ module.exports = async (app) => {
     controller.uploadPreviousFOET
   )
 
+  router.get(
+    `${process.env.PAYMENT_ENDPOINT}/:fileName/exists`,
+    controller.paymentExists
+  )
+
   router.post(
-    `${process.env.OPITO_ENDPOINT}/upload`,
+    process.env.PAYMENT_ENDPOINT,
     upload.single('file'),
-    controller.uploadCertificate
+    controller.uploadPayment
   )
 
   app.use('/', router)
