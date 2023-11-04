@@ -12,12 +12,12 @@ const generateStandardCertificate = async (req) => {
 
   const backgroundImage = './templates/certificates/certificate.jpg'
 
+  const signatureImage = './templates/id_cards/signature.jpg'
+
   const id = req.params.id
   const file = documentNumber(id)
 
   const fileName = `${process.env.PDF_CERTIFICATE_FOLDER}/${file}.pdf`
-
-  const qrPath = `${process.env.TOLMAN_WEBSITE_PATH}/${file}.pdf`
 
   const doc = await new PDFDocument({
     size: 'A4',
@@ -81,7 +81,11 @@ const generateStandardCertificate = async (req) => {
 
   doc.text(`Issuance Date: ${issued}`, column, row, { align: 'center' })
 
-  row += 110
+  row += 60
+
+  doc.image(signatureImage, 60, row, { width: 80 })
+
+  row += 50
 
   // const barcode = await bwipjs.toBuffer({
   //   bcid: 'ean13',
@@ -106,15 +110,19 @@ const generateStandardCertificate = async (req) => {
     doc.text(`Expiry Date: ${expiry}`, column, row)
   }
 
+  const qrText = `Learner: ${full_name}\nCourse: ${courseName}\nCertificate: ${certificate}\nIssued on: ${issued}\n${
+    expiry ? `Expires on: ${expiry}` : null
+  }`
+
   const qr = await bwipjs.toBuffer({
     bcid: 'qrcode',
-    text: qrPath,
+    text: qrText,
     scale: 1,
     textxalign: 'center' // Always good to set this
   })
 
   // await doc.image(qr, 460, 730)
-  await doc.image(qr, 240, 610)
+  await doc.image(qr, 240, 610, { width: 80, height: 80 })
 
   await doc.end()
 
@@ -133,8 +141,6 @@ const generateNimasaCertificate = async (req) => {
   const file = documentNumber(id)
 
   const fileName = `${process.env.PDF_CERTIFICATE_FOLDER}/${file}.pdf`
-
-  const qrPath = `${process.env.TOLMAN_WEBSITE_PATH}/${file}.pdf`
 
   const doc = await new PDFDocument({
     size: 'A4',
@@ -217,15 +223,19 @@ const generateNimasaCertificate = async (req) => {
     doc.text(`Expiry Date: ${expiry}`, column, row)
   }
 
+  const qrText = `Learner: ${full_name}\nCourse: ${courseName}\nCertificate: ${certificate}\nIssued on: ${issued}\n${
+    expiry ? `Expires on: ${expiry}` : null
+  }`
+
   const qr = await bwipjs.toBuffer({
     bcid: 'qrcode',
-    text: qrPath,
+    text: qrText,
     scale: 1,
     textxalign: 'center' // Always good to set this
   })
 
   // await doc.image(qr, 460, 730)
-  await doc.image(qr, 240, 610)
+  await doc.image(qr, 240, 610, { width: 80, height: 80 })
 
   await doc.end()
 
