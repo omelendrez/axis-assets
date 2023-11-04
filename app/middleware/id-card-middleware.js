@@ -14,6 +14,7 @@ const generateStandardIdCard = async (req) => {
       badge,
       full_name,
       certificate,
+      issued,
       expiry,
       user: { full_name: fullName },
       course: { name: courseName, front_id_text, back_id_text }
@@ -28,8 +29,6 @@ const generateStandardIdCard = async (req) => {
     const file = documentNumber(id)
 
     const fileName = `${process.env.PDF_ID_CARD_FOLDER}/${file}.pdf`
-
-    const qrPath = `${process.env.TOLMAN_WEBSITE_PATH}/${file}.pdf`
 
     const doc = await new PDFDocument({
       size: [cardWidth, cardHeight],
@@ -116,15 +115,18 @@ const generateStandardIdCard = async (req) => {
       })
       .image(signatureImage, 40, 120, { width: 48 })
 
+    const qrText = `Learner: ${full_name}\nCourse: ${courseName}\nCertificate: ${certificate}\nIssued on: ${issued}\n${
+      expiry ? `Expires on: ${expiry}` : null
+    }`
+
     const qr = await bwipjs.toBuffer({
       bcid: 'qrcode',
-      text: qrPath,
+      text: qrText,
       scale: 1,
-      height: 20,
-      width: 20
+      textxalign: 'center' // Always good to set this
     })
 
-    await doc.image(qr, 190, 100)
+    await doc.image(qr, 180, 90, { width: 60, height: 60 })
 
     await doc.end()
 
