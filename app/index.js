@@ -1,5 +1,6 @@
 require('dotenv').config()
 
+const exec = require('child_process').exec
 const express = require('express')
 const cors = require('cors')
 // const path = require('path')
@@ -42,4 +43,23 @@ if (process.env.NODE_ENV !== 'production') {
 emailService.on('emailSent', (email) => {
   const { to, subject } = email
   console.log(`Email sent to ${to} with subject ${subject}`)
+})
+
+const restore = exec(
+  'cd backup && bash file-restore.sh ',
+  function (err, stdout, stderr) {
+    if (err) {
+      return console.log(err)
+    }
+    if (stderr) {
+      console.log(stderr)
+    }
+    if (stdout) {
+      console.log(stdout)
+    }
+  }
+)
+
+restore.on('exit', function (code) {
+  console.log(`Exit with code ${code}`)
 })
