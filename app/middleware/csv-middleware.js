@@ -3,7 +3,7 @@ const { appendFileSync } = require('fs')
 const HEADER =
   'Start Date, End Date, Centre Code, Product Code, Booking Ref No,,'
 const SUB_HEADER =
-  'Learner Count,OPITO Lerner No, Vantage ID, First Name, Last Name, DOB, Forward Date'
+  'Learner Count,OPITO Learner No, Vantage ID, First Name, Last Name, DOB, Forward Date'
 
 const createFile = async (data) => {
   const { id, start, end, product_code, records } = data
@@ -19,7 +19,9 @@ const createFile = async (data) => {
 
   records.forEach((r, i) =>
     csvContent.push(
-      `${i + 1},,,${r.first_name}, ${r.last_name}, ${r.birth_date},`
+      `${i + 1},,,${r.first_name}, ${r.last_name}, ${r.birth_date},${
+        r.prev_expiry || ''
+      }`
     )
   )
 

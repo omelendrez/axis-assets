@@ -4,7 +4,7 @@
   "description": "Axis assets handler",
   "main": "index.js",
   "scripts": {
-    "start": "set NODE_ENV=production && nodemon app/",
+    "start": "nodemon app/",
     "lint": "eslint ./app --ext .js",
     "lint:fix": "eslint --fix ./app --ext .js"
   },

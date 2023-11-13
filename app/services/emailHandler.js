@@ -34,7 +34,7 @@ const poolTransporter = nodemailer.createTransport({
 
 exports.sendEmailHandler = (email) => {
   return new Promise((resolve, reject) => {
-    const from = process.env.SMTP_SERVER_USERNAME
+    const from = process.env.SMTP_SERVER_FROM
 
     const newEmail = { ...email, from }
 
