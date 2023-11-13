@@ -17,7 +17,7 @@ while read p; do
 done < $folder_group-folders-list.txt
 
 git add .
-git commit -m "Add files backup"
+git commit -m "Add backup files"
 git push
 
 

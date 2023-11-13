@@ -18,4 +18,10 @@ while read p; do
 done < $folder_group-folders-list.txt
 
 
+rm *.gz
+
+git add .
+git commit -m "Remove restored files"
+git push
+
 
