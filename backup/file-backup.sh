@@ -16,8 +16,8 @@ while read p; do
   tar -czf "$folder_group-$p.tar.gz" --exclude="*.gitignore" "./../$folder_group/$p"
 done < $folder_group-folders-list.txt
 
-# git add .
-# git commit -m "Add backup files"
-# git push
+git add .
+git commit -m "Add backup files"
+git push
 
 
