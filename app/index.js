@@ -2,8 +2,7 @@ require('dotenv').config()
 
 const express = require('express')
 const cors = require('cors')
-// const path = require('path')
-const { restoreBackup } = require('./helpers/backups')
+
 const { log } = require('./helpers/log')
 const logger = require('morgan')
 const { listEndpoints } = require('./helpers/routes')
@@ -44,5 +43,3 @@ emailService.on('emailSent', (email) => {
   const { to, subject } = email
   console.log(`Email sent to ${to} with subject ${subject}`)
 })
-
-restoreBackup()
