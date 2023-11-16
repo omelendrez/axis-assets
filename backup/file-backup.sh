@@ -1,6 +1,7 @@
-rm *.bz2
-
 days=-180
+extension=".tar.gz"
+
+rm $extension
 
 echo "Backup started..."
 echo
@@ -18,7 +19,7 @@ while read f; do
 
   find "./../$folder_group/$f" -mtime $days $(printf "! -name %s " $(cat skip_files)) -not -path "./../$folder_group/$f" -and -not -path "./../$folder_group/$f/csv" >"$folder_group-$f"
 
-done <$folder_group-folders-list
+done <"$folder_group-folders-list"
 
 folder_group="uploads"
 
@@ -44,7 +45,7 @@ while read f; do
 
   echo " - $f"
 
-  tar -cjf "$folder_group-$f.tar.bz2" -T "$folder_group-$f"
+  tar -cjf "$folder_group-$f$extension" -T "$folder_group-$f"
 
 done <"$folder_group-folders-list"
 
@@ -56,7 +57,7 @@ while read f; do
 
   echo " - $f"
 
-  tar -cjf "$folder_group-$f.tar.bz2" -T "$folder_group-$f"
+  tar -cjf "$folder_group-$f$extension" -T "$folder_group-$f"
 
 done <"$folder_group-folders-list"
 
