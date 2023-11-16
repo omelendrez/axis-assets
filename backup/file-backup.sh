@@ -44,11 +44,7 @@ while read f; do
 
   echo " - $f"
 
-  while read l; do
-
-    tar -cjf "$folder_group-$f.tar.gz" "$l"
-
-  done <"$folder_group-$f"
+  tar -cjf "$folder_group-$f.tar.gz" -T "$folder_group-$f"
 
 done <"$folder_group-folders-list"
 
@@ -60,11 +56,7 @@ while read f; do
 
   echo " - $f"
 
-  while read l; do
-
-    tar -cjf "$folder_group-$f.tar.gz" "$l"
-
-  done <"$folder_group-$f"
+  tar -cjf "$folder_group-$f.tar.gz" -T "$folder_group-$f"
 
 done <"$folder_group-folders-list"
 
