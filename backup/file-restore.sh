@@ -16,7 +16,7 @@ while read p; do
 
   echo " - $p"
 
-  tar -Pxjf "$folder_group-$p.$extension"
+  tar -Pxzvf "$folder_group-$p.$extension"
 
 done <"$folder_group-folders-list"
 
@@ -30,7 +30,7 @@ while read p; do
 
   echo " - $p"
 
-  tar -Pxjf "$folder_group-$p.$extension"
+  tar -Pxzvf "$folder_group-$p.$extension"
 
 done <"$folder_group-folders-list"
 
