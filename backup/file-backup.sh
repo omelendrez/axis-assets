@@ -1,9 +1,10 @@
 days=-180
-extension=".tar.gz"
+extension="tar.gz"
 
-rm $extension
+rm *.$extension
 
 echo "Backup started..."
+
 echo
 
 echo "Generate files list to compress"
@@ -23,6 +24,8 @@ done <"$folder_group-folders-list"
 
 folder_group="uploads"
 
+echo
+
 echo "$folder_group"
 
 while read f; do
@@ -36,7 +39,9 @@ done <"$folder_group-folders-list"
 echo
 
 echo "Compress selected files"
+
 echo
+
 folder_group="exports"
 
 echo "$folder_group"
@@ -45,11 +50,13 @@ while read f; do
 
   echo " - $f"
 
-  tar -cjf "$folder_group-$f$extension" -T "$folder_group-$f"
+  tar -cjf "$folder_group-$f.$extension" -T "$folder_group-$f"
 
 done <"$folder_group-folders-list"
 
 folder_group="uploads"
+
+echo
 
 echo "$folder_group"
 
@@ -57,7 +64,7 @@ while read f; do
 
   echo " - $f"
 
-  tar -cjf "$folder_group-$f$extension" -T "$folder_group-$f"
+  tar -cjf "$folder_group-$f.$extension" -T "$folder_group-$f"
 
 done <"$folder_group-folders-list"
 

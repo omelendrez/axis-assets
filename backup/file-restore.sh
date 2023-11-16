@@ -1,4 +1,12 @@
-extension=".tar.gz"
+extension="tar.gz"
+
+echo "Backup started..."
+
+echo
+
+echo "Extracting backup files"
+
+echo
 
 folder_group="exports"
 
@@ -8,11 +16,13 @@ while read p; do
 
   echo " - $p"
 
-  tar -Pxjf "$folder_group-$p$extension"
+  tar -Pxjf "$folder_group-$p.$extension"
 
 done <"$folder_group-folders-list"
 
 folder_group="uploads"
+
+echo
 
 echo "$folder_group"
 
@@ -20,8 +30,16 @@ while read p; do
 
   echo " - $p"
 
-  tar -Pxjf "$folder_group-$p$extension"
+  tar -Pxjf "$folder_group-$p.$extension"
 
 done <"$folder_group-folders-list"
 
-rm $extension
+echo
+
+echo "Remove backup files"
+
+rm *.$extension
+
+echo
+
+echo "Restore process complete"
