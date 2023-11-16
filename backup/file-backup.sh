@@ -76,4 +76,6 @@ git add .
 git commit -m "Add backup files as of  $(date +"%d/%m/%Y %H:%M") "
 git push
 
+echo
+
 echo "Backup process complete"
