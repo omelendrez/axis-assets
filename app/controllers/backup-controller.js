@@ -25,7 +25,7 @@ const createBackup = async (req, res) => {
 }
 
 const restoreBackup = async (req, res) => {
-  if (fs.readdirSync('./backup').filter((f) => f.includes('gz')).length) {
+  if (fs.readdirSync('./backup').filter((f) => f.includes('tar.bz2')).length) {
     const restore = exec(
       'cd backup && bash file-restore.sh ',
       function (err, stdout, stderr) {
