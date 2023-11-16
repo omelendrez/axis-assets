@@ -50,7 +50,7 @@ while read f; do
 
   echo " - $f"
 
-  tar -cjf "$folder_group-$f.$extension" -T "$folder_group-$f"
+  tar -cavf "$folder_group-$f.$extension" -T "$folder_group-$f"
 
 done <"$folder_group-folders-list"
 
@@ -64,7 +64,7 @@ while read f; do
 
   echo " - $f"
 
-  tar -cjf "$folder_group-$f.$extension" -T "$folder_group-$f"
+  tar -cavf "$folder_group-$f.$extension" -T "$folder_group-$f"
 
 done <"$folder_group-folders-list"
 
