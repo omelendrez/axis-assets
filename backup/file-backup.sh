@@ -1,6 +1,6 @@
 rm *.gz
 
-days=-60
+days=-180
 
 echo "Backup started..."
 echo
