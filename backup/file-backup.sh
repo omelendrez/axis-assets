@@ -73,7 +73,7 @@ echo "Pushing files to GitHub repository."
 echo
 
 git add .
-git commit -m "Add backup files"
+git commit -m "Add backup files as of $(date +"%d/%m/%Y")"
 git push
 
 echo "Backup process complete"
