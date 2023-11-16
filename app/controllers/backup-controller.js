@@ -4,7 +4,7 @@ const { ZIP_EXTENSION } = require('../helpers/constants')
 
 const createBackup = async (req, res) => {
   const backup = exec(
-    'cd backup && bash file-backup.sh ',
+    'cd backup && bash backup-files.sh ',
     function (err, stdout, stderr) {
       if (err) {
         console.log(err)
@@ -30,7 +30,7 @@ const restoreBackup = async (req, res) => {
     fs.readdirSync('./backup').filter((f) => f.includes(ZIP_EXTENSION)).length
   ) {
     const restore = exec(
-      'cd backup && bash file-restore.sh ',
+      'cd backup && bash restore-files.sh ',
       function (err, stdout, stderr) {
         if (err) {
           console.log(err)
