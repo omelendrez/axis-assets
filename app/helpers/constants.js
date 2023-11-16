@@ -8,4 +8,6 @@ const CERT_TYPE = {
 const OPITO_HUB_URL =
   'https://www.thehubopito.com/public/validate?Surname={surname}&CertificationDate={date}&Ref={certificate}'
 
-module.exports = { CERT_TYPE, OPITO_HUB_URL }
+const ZIP_EXTENSION = 'tar.gz'
+
+module.exports = { CERT_TYPE, OPITO_HUB_URL, ZIP_EXTENSION }

@@ -1,5 +1,6 @@
 const exec = require('child_process').exec
 const fs = require('fs')
+const { ZIP_EXTENSION } = require('../helpers/constants')
 
 const createBackup = async (req, res) => {
   const backup = exec(
@@ -25,7 +26,9 @@ const createBackup = async (req, res) => {
 }
 
 const restoreBackup = async (req, res) => {
-  if (fs.readdirSync('./backup').filter((f) => f.includes('tar.gz')).length) {
+  if (
+    fs.readdirSync('./backup').filter((f) => f.includes(ZIP_EXTENSION)).length
+  ) {
     const restore = exec(
       'cd backup && bash file-restore.sh ',
       function (err, stdout, stderr) {
