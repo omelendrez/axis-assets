@@ -1,4 +1,4 @@
-rm *.gz
+rm *.bz2
 
 days=-180
 
@@ -44,7 +44,7 @@ while read f; do
 
   echo " - $f"
 
-  tar -cjf "$folder_group-$f.tar.gz" -T "$folder_group-$f"
+  tar -cjf "$folder_group-$f.tar.bz2" -T "$folder_group-$f"
 
 done <"$folder_group-folders-list"
 
@@ -56,7 +56,7 @@ while read f; do
 
   echo " - $f"
 
-  tar -cjf "$folder_group-$f.tar.gz" -T "$folder_group-$f"
+  tar -cjf "$folder_group-$f.tar.bz2" -T "$folder_group-$f"
 
 done <"$folder_group-folders-list"
 

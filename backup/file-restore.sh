@@ -6,7 +6,7 @@ while read p; do
 
   echo " - $p"
 
-  tar -Pxzf "$folder_group-$p.tar.gz"
+  tar -Pxjf "$folder_group-$p.tar.bz2"
 
 done <"$folder_group-folders-list"
 
@@ -18,8 +18,8 @@ while read p; do
 
   echo " - $p"
 
-  tar -Pxzf "$folder_group-$p.tar.gz"
+  tar -Pxjf "$folder_group-$p.tar.bz2"
 
 done <"$folder_group-folders-list"
 
-rm *.gz
+rm *.bz2
