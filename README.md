@@ -95,3 +95,9 @@ Finally you have to copy all the photographs from the legacy server into the new
 
 If everything concludes without errors, you will be able to see the trainees' photograph in the frontend app.
 <img width="1280" alt="image" src="https://user-images.githubusercontent.com/7883563/235481303-3d093d83-2aff-4b2d-b495-85c3b19385b8.png">
+
+## Node version
+
+We use `v20.9.0` and we will not upgrade yet due to a warning caused by the issue below which shows up starting with `v21.0.0`.
+
+https://github.com/forcedotcom/cli/issues/2535
