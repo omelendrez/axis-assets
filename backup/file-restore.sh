@@ -1,6 +1,6 @@
 extension="tar.gz"
 
-echo "Backup started..."
+echo "Restore started..."
 
 echo
 
