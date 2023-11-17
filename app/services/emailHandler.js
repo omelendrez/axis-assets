@@ -21,6 +21,11 @@ assert.ok(
   'The "SMTP_SERVER_PASSWORD" environment variable is required'
 )
 
+assert.ok(
+  process.env.SMTP_SERVER_FROM,
+  'The "SMTP_SERVER_FROM" environment variable is required'
+)
+
 const poolTransporter = nodemailer.createTransport({
   pool: true,
   host: process.env.SMTP_SERVER_DOMAIN,
