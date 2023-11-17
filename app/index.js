@@ -37,6 +37,7 @@ const emailService = new EmailService()
 
 if (process.env.NODE_ENV !== 'production') {
   listEndpoints(app, '')
+  console.log(process.env.NODE_ENV)
 }
 
 emailService.on('emailSent', (email) => {
