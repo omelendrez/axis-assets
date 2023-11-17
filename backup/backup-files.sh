@@ -14,7 +14,7 @@ while read root; do
 
     cd ../$root/$folder
 
-    tar --create --gzip --file="/$curdir/compressed-files/$root-$folder.$extension" --exclude-from="$curdir/skip_files" --newer-mtime="60 days ago" .
+    tar --create --gzip --ignore-failed-read --file="/$curdir/compressed-files/$root-$folder.$extension" --exclude-from="$curdir/skip_files" --newer-mtime="60 days ago" .
 
     cd $curdir
 

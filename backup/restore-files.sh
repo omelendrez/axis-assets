@@ -16,7 +16,7 @@ while read root; do
 
     cd ../$root/$folder
 
-    tar --extract --verbose --file="/$curdir/compressed-files/$root-$folder.$extension"
+    tar --extract --verbose --ignore-failed-read --file="/$curdir/compressed-files/$root-$folder.$extension"
 
     cd $curdir
 
