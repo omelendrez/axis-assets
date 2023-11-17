@@ -1,4 +1,3 @@
 certificates
 id-cards
-opito
 welcome-letter
