@@ -28,7 +28,7 @@ const createBackup = async (req, res) => {
 const restoreBackup = async (req, res) => {
   if (
     fs
-      .readdirSync('./backup/commpressed-files')
+      .readdirSync('./backup/compressed-files')
       .filter((f) => f.includes(ZIP_EXTENSION)).length
   ) {
     const restore = exec(
