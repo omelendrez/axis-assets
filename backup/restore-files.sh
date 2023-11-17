@@ -6,17 +6,15 @@ echo "Restore started..."
 
 echo
 
-echo "Extracting backup files"
-
 while read root; do
 
   while read folder; do
 
-    echo "$root/$folder"
+    echo "- $root/$folder"
 
     cd ../$root/$folder
 
-    tar --extract --verbose --ignore-failed-read --file="/$curdir/compressed-files/$root-$folder.$extension"
+    tar --extract --verbose --file="/$curdir/compressed-files/$root-$folder.$extension"
 
     cd $curdir
 
@@ -26,4 +24,6 @@ done <"folders-lists/root-folders-list.txt"
 
 echo
 
-echo "Restore process complete"
+echo "Restore process complete!"
+
+echo

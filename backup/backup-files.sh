@@ -6,15 +6,17 @@ rm compressed-files/*.$extension
 
 echo "Backup started..."
 
+echo
+
 while read root; do
 
   while read folder; do
 
-    echo " - $folder"
+    echo "- $root/$folder"
 
     cd ../$root/$folder
 
-    tar --create --gzip --ignore-failed-read --file="/$curdir/compressed-files/$root-$folder.$extension" --exclude-from="$curdir/skip_files" --newer-mtime="60 days ago" .
+    tar --create --gzip --file="/$curdir/compressed-files/$root-$folder.$extension" --exclude-from="$curdir/skip_files" --newer-mtime="60 days ago" .
 
     cd $curdir
 
@@ -28,10 +30,12 @@ echo
 echo "Pushing files to GitHub repository."
 echo
 
-git add .
-git commit -m "Add backup files as of  $(date +"%d/%m/%Y %H:%M") "
-git push
+# git add .
+# git commit -m "Add backup files as of  $(date +"%d/%m/%Y %H:%M") "
+# git push
 
 echo
 
-echo "Backup process complete"
+echo "Backup process complete!"
+
+echo
