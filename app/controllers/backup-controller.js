@@ -27,7 +27,9 @@ const createBackup = async (req, res) => {
 
 const restoreBackup = async (req, res) => {
   if (
-    fs.readdirSync('./backup').filter((f) => f.includes(ZIP_EXTENSION)).length
+    fs
+      .readdirSync('./backup/commpressed-files')
+      .filter((f) => f.includes(ZIP_EXTENSION)).length
   ) {
     const restore = exec(
       'cd backup && bash restore-files.sh ',
