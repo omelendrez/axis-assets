@@ -1,4 +1,4 @@
-extension="tar.gz"
+extension="bz2"
 
 curdir=$(pwd)
 
@@ -8,49 +8,21 @@ echo
 
 echo "Extracting backup files"
 
-echo
+while read root; do
 
-root="exports"
+  while read folder; do
 
-echo "$root"
+    echo "$root/$folder"
 
-cd /
+    cd ../$root/$folder
 
-while read folder; do
+    tar --extract --verbose --file="/$curdir/compressed-files/$root-$folder.$extension"
 
-  echo " - $folder"
+    cd $curdir
 
-  # tar -tvzf "$root-$folder.$extension"
-  tar -Pxf "$curdir/$root-$folder.$extension"
+  done <"folders-lists/$root-folders-list.txt"
 
-done <"$curdir/$root-folders-list"
-
-cd $curdir
-
-root="uploads"
-
-echo
-
-echo "$root"
-
-cd /
-
-while read folder; do
-
-  echo " - $folder"
-
-  # tar -tvzf "$root-$folder.$extension"
-  tar -Pxf "$curdir/$root-$folder.$extension"
-
-done <"$curdir/$root-folders-list"
-
-cd $curdir
-
-echo
-
-echo "Remove backup files"
-
-rm *.$extension
+done <"folders-lists/root-folders-list.txt"
 
 echo
 

@@ -1,7 +1,8 @@
 days=-180
-extension="tar.gz"
+extension="bz2"
+curdir=$(pwd)
 
-rm *.$extension
+rm compressed-files/*.$extension
 
 echo "Backup started..."
 
@@ -11,11 +12,15 @@ while read root; do
 
     echo " - $folder"
 
-    tar -Pcj --file="$root-$folder.$extension" -T "$root-$folder"
+    cd ../$root/$folder
 
-  done <"$root-folders-list.txt"
+    tar --create --bzip2 --file="/$curdir/compressed-files/$root-$folder.$extension" --exclude-from="$curdir/skip_files" --newer-mtime="60 days ago" .
 
-done <"root-folders-list.txt"
+    cd $curdir
+
+  done <"folders-lists/$root-folders-list.txt"
+
+done <"folders-lists/root-folders-list.txt"
 
 echo
 
