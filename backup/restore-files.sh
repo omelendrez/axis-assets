@@ -1,4 +1,4 @@
-extension="bz2"
+extension="gz"
 
 curdir=$(pwd)
 

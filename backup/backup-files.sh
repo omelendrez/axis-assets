@@ -1,5 +1,5 @@
 days=-180
-extension="bz2"
+extension="gz"
 curdir=$(pwd)
 
 rm compressed-files/*.$extension
@@ -14,7 +14,7 @@ while read root; do
 
     cd ../$root/$folder
 
-    tar --create --bzip2 --file="/$curdir/compressed-files/$root-$folder.$extension" --exclude-from="$curdir/skip_files" --newer-mtime="60 days ago" .
+    tar --create --gzip --file="/$curdir/compressed-files/$root-$folder.$extension" --exclude-from="$curdir/skip_files" --newer-mtime="60 days ago" .
 
     cd $curdir
 

@@ -1,20 +1,19 @@
-extension="bz2"
+extension="gz"
 
 curdir=$(pwd)
 
 echo "Showing zipped files (not extracting! just viewing!)"
 
-echo
-
 while read root; do
 
   while read folder; do
 
+    echo
     echo "$root/$folder"
 
     cd ../$root/$folder
 
-    tar -tvjf "/$curdir/compressed-files/$root-$folder.$extension"
+    tar --list --verbose --file="/$curdir/compressed-files/$root-$folder.$extension"
 
     cd $curdir
 
