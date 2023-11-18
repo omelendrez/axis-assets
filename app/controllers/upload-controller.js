@@ -24,7 +24,8 @@ exports.uploadPicture = async (req, res) => {
       })
     }
     const file = photo.originalname
-    const ext = file.split('.')[1]
+    const split = file.split('.')
+    const ext = split.pop()
     const fileName = `${req.body.name}.${ext}`
 
     const inputFile = `${process.env.COMPRESS_TEMP_FOLDER}/${fileName}`
@@ -49,12 +50,12 @@ exports.uploadPicture = async (req, res) => {
         })
       })
       .catch((err) => {
-        console.log(err)
+        console.error(err)
         log.error(err)
         res.status(500).send(err)
       })
   } catch (err) {
-    console.log(err)
+    console.error(err)
     log.error(err)
     res.status(500).send(err)
   }
