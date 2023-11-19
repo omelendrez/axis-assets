@@ -23,9 +23,8 @@ exports.uploadPicture = async (req, res) => {
         message: 'No file is selected.'
       })
     }
-    const file = photo.originalname
-    const split = file.split('.')
-    const ext = split.pop()
+
+    const ext = photo.originalname.split('.').pop()
     const fileName = `${req.body.name}.${ext}`
 
     const inputFile = `${process.env.COMPRESS_TEMP_FOLDER}/${fileName}`
@@ -81,8 +80,8 @@ exports.uploadLearnerIdCard = async (req, res) => {
         message: 'No file is selected.'
       })
     }
-    const file = idCard.originalname
-    const ext = file.split('.')[1]
+
+    const ext = idCard.originalname.split('.').pop()
     const fileName = `${req.body.name}.${ext}`
 
     const inputFile = `${process.env.COMPRESS_TEMP_FOLDER}/${fileName}`
@@ -133,14 +132,14 @@ exports.previouseFOETExists = async (req, res) => {
 
 exports.uploadPreviousFOET = async (req, res) => {
   try {
-    const photo = await req.file
-    if (!photo) {
+    const image = await req.file
+    if (!image) {
       return res.status(400).send({
         message: 'No file is selected.'
       })
     }
-    const file = photo.originalname
-    const ext = file.split('.')[1]
+
+    const ext = image.originalname.split('.').pop()
     const fileName = `${req.body.name}.${ext}`
 
     const inputFile = `${process.env.COMPRESS_TEMP_FOLDER}/${fileName}`
@@ -161,8 +160,8 @@ exports.uploadPreviousFOET = async (req, res) => {
           message: 'File is uploaded.',
           data: {
             name: fileName,
-            mimetype: photo.mimetype,
-            size: photo.size
+            mimetype: image.mimetype,
+            size: image.size
           }
         })
       })
@@ -180,14 +179,14 @@ exports.uploadPreviousFOET = async (req, res) => {
 
 exports.uploadTemplate = async (req, res) => {
   try {
-    const photo = await req.file
-    if (!photo) {
+    const background = await req.file
+    if (!background) {
       return res.status(400).send({
         message: 'No file is selected.'
       })
     }
-    const file = photo.originalname
-    const ext = file.split('.')[1]
+
+    const ext = background.originalname.split('.').pop()
     const fileName = `${req.body.name}.${ext}`
 
     const inputFile = `${process.env.COMPRESS_TEMP_FOLDER}/${fileName}`
@@ -208,8 +207,8 @@ exports.uploadTemplate = async (req, res) => {
           message: 'File is uploaded.',
           data: {
             name: fileName,
-            mimetype: photo.mimetype,
-            size: photo.size
+            mimetype: background.mimetype,
+            size: background.size
           }
         })
       })
@@ -233,8 +232,8 @@ exports.uploadCertificate = async (req, res) => {
         message: 'No file is selected.'
       })
     }
-    const file = document.originalname
-    const ext = file.split('.')[1]
+
+    const ext = document.originalname.split('.').pop()
     const fileName = `${req.body.name}.${ext}`
 
     const inputFile = `${process.env.COMPRESS_TEMP_FOLDER}/${fileName}`
@@ -268,14 +267,14 @@ exports.paymentExists = async (req, res) => {
 
 exports.uploadPayment = async (req, res) => {
   try {
-    const document = await req.file
-    if (!document) {
+    const image = await req.file
+    if (!image) {
       return res.status(400).send({
         message: 'No file is selected.'
       })
     }
-    const file = document.originalname
-    const ext = file.split('.')[1]
+
+    const ext = image.originalname.split('.').pop()
     const fileName = `${req.body.name}.${ext}`
 
     const inputFile = `${process.env.COMPRESS_TEMP_FOLDER}/${fileName}`
