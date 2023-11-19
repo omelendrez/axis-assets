@@ -1,3 +1,5 @@
+#!/bin/bash
+
 extension="gz"
 
 curdir=$(pwd)

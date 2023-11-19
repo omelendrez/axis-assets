@@ -1,3 +1,5 @@
+#!/bin/bash
+
 days=-180
 extension="gz"
 curdir=$(pwd)
