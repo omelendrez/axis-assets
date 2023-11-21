@@ -1,7 +1,15 @@
 node_modules
 
-exports
-uploads
+exports/certificates
+exports/id-cards
+exports/opito
+exports/welcome-letter
+
+uploads/foets/
+uploads/learner-ids
+uploads/payments
+uploads/pictures
+uploads/temp
 
 .DS_Store
 
