@@ -1,15 +1,15 @@
 node_modules
 
-exports/certificates
-exports/id-cards
-exports/opito
-exports/welcome-letter
+# exports/certificates
+# exports/id-cards
+# exports/opito
+# exports/welcome-letter
 
-uploads/foets/
-uploads/learner-ids
-uploads/payments
-# uploads/pictures
-uploads/temp
+# uploads/foets/
+# uploads/learner-ids
+# uploads/payments
+# # uploads/pictures
+# uploads/temp
 
 .DS_Store
 
