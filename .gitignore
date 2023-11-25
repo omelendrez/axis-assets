@@ -8,7 +8,7 @@ node_modules
 # exports/welcome-letter
 
 # uploads/foets/
-uploads/learner-ids
+# uploads/learner-ids
 uploads/payments
 uploads/pictures
 uploads/temp
