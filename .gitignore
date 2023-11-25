@@ -2,7 +2,7 @@ node_modules
 
 *.zip
 
-exports/certificates
+# exports/certificates
 exports/id-cards
 exports/opito
 exports/welcome-letter
