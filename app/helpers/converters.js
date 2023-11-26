@@ -18,4 +18,10 @@ const toWord = (num) => {
   return numbers[num]
 }
 
-module.exports = { documentNumber, toWord }
+const getFileName = (name, file) => {
+  const ext = file.originalname.split('.').pop()
+  const fileName = `${name}.${ext.toLowerCase()}`
+  return fileName
+}
+
+module.exports = { documentNumber, toWord, getFileName }

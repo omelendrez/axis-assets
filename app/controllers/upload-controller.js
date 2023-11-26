@@ -2,6 +2,7 @@ const sharp = require('sharp')
 const fs = require('fs')
 
 const { log } = require('../helpers/log')
+const { getFileName } = require('../helpers/converters')
 
 exports.pictureExists = async (req, res) => {
   const file = `${process.env.PICTURE_FOLDER}/${req.params.fileName}`
@@ -24,8 +25,7 @@ exports.uploadPicture = async (req, res) => {
       })
     }
 
-    const ext = photo.originalname.split('.').pop()
-    const fileName = `${req.body.name}.${ext}`
+    const fileName = getFileName(req.body.name, photo)
 
     const inputFile = `${process.env.COMPRESS_TEMP_FOLDER}/${fileName}`
     const outputFile = `${process.env.PICTURE_FOLDER}/${fileName}`
@@ -81,8 +81,7 @@ exports.uploadLearnerIdCard = async (req, res) => {
       })
     }
 
-    const ext = idCard.originalname.split('.').pop()
-    const fileName = `${req.body.name}.${ext}`
+    const fileName = getFileName(req.body.name, idCard)
 
     const inputFile = `${process.env.COMPRESS_TEMP_FOLDER}/${fileName}`
     const outputFile = `${process.env.LEARNER_ID_FOLDER}/${fileName}`
@@ -139,8 +138,7 @@ exports.uploadPreviousFOET = async (req, res) => {
       })
     }
 
-    const ext = image.originalname.split('.').pop()
-    const fileName = `${req.body.name}.${ext}`
+    const fileName = getFileName(req.body.name, image)
 
     const inputFile = `${process.env.COMPRESS_TEMP_FOLDER}/${fileName}`
     const outputFile = `${process.env.FOET_FOLDER}/${fileName}`
@@ -186,8 +184,7 @@ exports.uploadTemplate = async (req, res) => {
       })
     }
 
-    const ext = background.originalname.split('.').pop()
-    const fileName = `${req.body.name}.${ext}`
+    const fileName = getFileName(req.body.name, background)
 
     const inputFile = `${process.env.COMPRESS_TEMP_FOLDER}/${fileName}`
     const outputFile = `${process.env.FOET_FOLDER}/${fileName}`
@@ -233,8 +230,7 @@ exports.uploadCertificate = async (req, res) => {
       })
     }
 
-    const ext = document.originalname.split('.').pop()
-    const fileName = `${req.body.name}.${ext}`
+    const fileName = getFileName(req.body.name, document)
 
     const inputFile = `${process.env.COMPRESS_TEMP_FOLDER}/${fileName}`
     const outputFile = `${process.env.PDF_CERTIFICATE_FOLDER}/${fileName}`
@@ -274,8 +270,7 @@ exports.uploadPayment = async (req, res) => {
       })
     }
 
-    const ext = image.originalname.split('.').pop()
-    const fileName = `${req.body.name}.${ext}`
+    const fileName = getFileName(req.body.name, image)
 
     const inputFile = `${process.env.COMPRESS_TEMP_FOLDER}/${fileName}`
     const outputFile = `${process.env.PAYMENT_FOLDER}/${fileName}`
