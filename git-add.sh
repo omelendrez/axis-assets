@@ -1,14 +1,9 @@
 #!/bin/bash
 
-counter=1
-limit=50
+file=TR520
 
-for file in $(git status --short | grep -v "??" | cut -d " " -f 3); do
-  if [[ $c -gt $limit ]]; then
-    exit 1
-  fi
-  echo $file
-  git add $file
-
-  ((c++))
+for ((c = 0; c <= 9; c++)); do
+  git add uploads/pictures/$file$c*.*
+  git commit -m "pictures/$file$c*.*"
+  git push
 done
