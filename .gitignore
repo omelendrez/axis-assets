@@ -2,16 +2,8 @@ node_modules
 
 *.zip
 
-# exports/certificates
-# exports/id-cards
-# exports/opito
-# exports/welcome-letter
-
-# uploads/foets/
-# uploads/learner-ids
-# uploads/payments
-uploads/pictures
 uploads/temp
+uploads/*.sh
 
 .DS_Store
 
