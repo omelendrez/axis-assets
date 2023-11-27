@@ -1,6 +1,6 @@
 #!/bin/bash
 
-file=TR523
+file=TR00
 
 for ((c = 0; c <= 9; c++)); do
   git add uploads/pictures/$file$c*.*
