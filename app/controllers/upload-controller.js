@@ -1,8 +1,7 @@
-const sharp = require('sharp')
 const fs = require('fs')
-
 const { log } = require('../helpers/log')
 const { getFileName } = require('../helpers/converters')
+const { upload } = require('../services/uploader')
 
 exports.pictureExists = async (req, res) => {
   const file = `${process.env.PICTURE_FOLDER}/${req.params.fileName}`
@@ -30,29 +29,12 @@ exports.uploadPicture = async (req, res) => {
     const inputFile = `${process.env.COMPRESS_TEMP_FOLDER}/${fileName}`
     const outputFile = `${process.env.PICTURE_FOLDER}/${fileName}`
 
-    sharp(inputFile)
-      .withMetadata()
-      .resize({
-        width: parseInt(process.env.PICTURE_WIDTH, 10),
-        height: parseInt(process.env.PICTURE_HEIGHT, 10)
-      })
-      .toFile(outputFile)
-      .then(() => {
-        fs.rmSync(inputFile, { force: true })
-        res.send({
-          message: 'File is uploaded.',
-          data: {
-            name: fileName,
-            mimetype: photo.mimetype,
-            size: photo.size
-          }
-        })
-      })
-      .catch((err) => {
-        console.error(err)
-        log.error(err)
-        res.status(500).send(err)
-      })
+    const width = parseInt(process.env.PICTURE_WIDTH, 10)
+    const height = parseInt(process.env.PICTURE_HEIGHT, 10)
+
+    upload(inputFile, outputFile, fileName, photo, width, height)
+      .then((info) => res.send(info))
+      .catch((err) => res.status(500).send(err))
   } catch (err) {
     console.error(err)
     log.error(err)
@@ -86,32 +68,21 @@ exports.uploadLearnerIdCard = async (req, res) => {
     const inputFile = `${process.env.COMPRESS_TEMP_FOLDER}/${fileName}`
     const outputFile = `${process.env.LEARNER_ID_FOLDER}/${fileName}`
 
-    sharp(inputFile)
-      .withMetadata()
-      .resize({
-        width: parseInt(process.env.LEARNER_ID_WIDTH, 10),
-        height: parseInt(process.env.LEARNER_ID_HEIGHT, 10)
-      })
-      .rotate(-90, { background: { r: 0, g: 0, b: 0, alpha: 0 } })
-      .toFile(outputFile)
-      .then(() => {
-        fs.rmSync(inputFile, { force: true })
-        res.send({
-          message: 'File is uploaded.',
-          data: {
-            name: fileName,
-            mimetype: idCard.mimetype,
-            size: idCard.size
-          }
-        })
-      })
-      .catch((err) => {
-        console.log(err)
-        log.error(err)
-        res.status(500).send(err)
-      })
+    const width = parseInt(process.env.LEARNER_ID_WIDTH, 10)
+    const height = parseInt(process.env.LEARNER_ID_HEIGHT, 10)
+
+    const rotate = {
+      angle: -90,
+      data: {
+        background: { r: 0, g: 0, b: 0, alpha: 0 }
+      }
+    }
+
+    upload(inputFile, outputFile, fileName, idCard, width, height, null, rotate)
+      .then((info) => res.send(info))
+      .catch((err) => res.status(500).send(err))
   } catch (err) {
-    console.log(err)
+    console.error(err)
     log.error(err)
     res.status(500).send(err)
   }
@@ -143,33 +114,16 @@ exports.uploadPreviousFOET = async (req, res) => {
     const inputFile = `${process.env.COMPRESS_TEMP_FOLDER}/${fileName}`
     const outputFile = `${process.env.FOET_FOLDER}/${fileName}`
 
-    sharp(inputFile)
-      .withMetadata()
+    const height = parseInt(process.env.FOET_HEIGHT, 10)
 
-      // .rotate(-90, { background: { r: 0, g: 0, b: 0, alpha: 0 } })
-      .resize({
-        fit: sharp.fit.contain,
-        height: parseInt(process.env.FOET_HEIGHT, 10)
-      })
-      .toFile(outputFile)
-      .then(() => {
-        fs.rmSync(inputFile, { force: true })
-        res.send({
-          message: 'File is uploaded.',
-          data: {
-            name: fileName,
-            mimetype: image.mimetype,
-            size: image.size
-          }
-        })
-      })
+    upload(inputFile, outputFile, fileName, image, null, height, 'contain')
+      .then((info) => res.send(info))
       .catch((err) => {
         console.log(err)
-        log.error(err)
         res.status(500).send(err)
       })
   } catch (err) {
-    console.log(err)
+    console.error(err)
     log.error(err)
     res.status(500).send(err)
   }
@@ -189,33 +143,13 @@ exports.uploadTemplate = async (req, res) => {
     const inputFile = `${process.env.COMPRESS_TEMP_FOLDER}/${fileName}`
     const outputFile = `${process.env.FOET_FOLDER}/${fileName}`
 
-    sharp(inputFile)
-      .withMetadata()
+    const height = parseInt(process.env.FOET_HEIGHT, 10)
 
-      // .rotate(-90, { background: { r: 0, g: 0, b: 0, alpha: 0 } })
-      .resize({
-        fit: sharp.fit.contain,
-        height: parseInt(process.env.FOET_HEIGHT, 10)
-      })
-      .toFile(outputFile)
-      .then(() => {
-        fs.rmSync(inputFile, { force: true })
-        res.send({
-          message: 'File is uploaded.',
-          data: {
-            name: fileName,
-            mimetype: background.mimetype,
-            size: background.size
-          }
-        })
-      })
-      .catch((err) => {
-        console.log(err)
-        log.error(err)
-        res.status(500).send(err)
-      })
+    upload(inputFile, outputFile, fileName, background, null, height, 'contain')
+      .then((info) => res.send(info))
+      .catch((err) => res.status(500).send(err))
   } catch (err) {
-    console.log(err)
+    console.error(err)
     log.error(err)
     res.status(500).send(err)
   }
