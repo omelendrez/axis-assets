@@ -5,7 +5,6 @@ exports.upload = (
   inputFile,
   outputFile,
   fileName,
-  image,
   width,
   height,
   fit,
