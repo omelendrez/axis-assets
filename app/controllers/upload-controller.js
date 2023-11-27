@@ -32,7 +32,7 @@ exports.uploadPicture = async (req, res) => {
     const width = parseInt(process.env.PICTURE_WIDTH, 10)
     const height = parseInt(process.env.PICTURE_HEIGHT, 10)
 
-    upload(inputFile, outputFile, fileName, photo, width, height)
+    upload(inputFile, outputFile, fileName, width, height)
       .then((info) => res.send(info))
       .catch((err) => res.status(500).send(err))
   } catch (err) {
@@ -78,7 +78,7 @@ exports.uploadLearnerIdCard = async (req, res) => {
       }
     }
 
-    upload(inputFile, outputFile, fileName, idCard, width, height, null, rotate)
+    upload(inputFile, outputFile, fileName, width, height, null, rotate)
       .then((info) => res.send(info))
       .catch((err) => res.status(500).send(err))
   } catch (err) {
@@ -116,7 +116,7 @@ exports.uploadPreviousFOET = async (req, res) => {
 
     const height = parseInt(process.env.FOET_HEIGHT, 10)
 
-    upload(inputFile, outputFile, fileName, image, null, height, 'contain')
+    upload(inputFile, outputFile, fileName, null, height, 'contain')
       .then((info) => res.send(info))
       .catch((err) => {
         console.log(err)
@@ -145,7 +145,7 @@ exports.uploadTemplate = async (req, res) => {
 
     const height = parseInt(process.env.FOET_HEIGHT, 10)
 
-    upload(inputFile, outputFile, fileName, background, null, height, 'contain')
+    upload(inputFile, outputFile, fileName, null, height, 'contain')
       .then((info) => res.send(info))
       .catch((err) => res.status(500).send(err))
   } catch (err) {
