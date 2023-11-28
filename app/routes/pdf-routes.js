@@ -1,10 +1,13 @@
 const controller = require('../controllers/pdf-controller')
+const uploadController = require('../controllers/upload-controller')
 const middleware = require('../middleware/pdf-middleware')
+const uploadMiddleware = require('../middleware/upload-middleware')
 
 module.exports = async (app) => {
   const router = require('express').Router()
 
   const pdf = middleware.pdf
+  const upload = uploadMiddleware.upload
 
   // Certificate
 
@@ -17,6 +20,12 @@ module.exports = async (app) => {
   router.get(
     `${process.env.PDF_CERTIFICATE_ENDPOINT}/:fileName/exists`,
     controller.certificateExists
+  )
+
+  router.post(
+    `${process.env.PDF_CERTIFICATE_ENDPOINT}/restore`,
+    upload.single('file'),
+    uploadController.uploadCertificate
   )
 
   // Id Card
