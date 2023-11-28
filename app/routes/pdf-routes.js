@@ -12,6 +12,12 @@ module.exports = async (app) => {
   // Certificate
 
   router.post(
+    `${process.env.PDF_CERTIFICATE_ENDPOINT}/restore`,
+    upload.single('file'),
+    uploadController.uploadCertificate
+  )
+
+  router.post(
     `${process.env.PDF_CERTIFICATE_ENDPOINT}/:id`,
     pdf.none(),
     controller.createCertificate
@@ -20,12 +26,6 @@ module.exports = async (app) => {
   router.get(
     `${process.env.PDF_CERTIFICATE_ENDPOINT}/:fileName/exists`,
     controller.certificateExists
-  )
-
-  router.post(
-    `${process.env.PDF_CERTIFICATE_ENDPOINT}/restore`,
-    upload.single('file'),
-    uploadController.uploadCertificate
   )
 
   // Id Card
