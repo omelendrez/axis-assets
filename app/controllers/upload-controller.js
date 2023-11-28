@@ -222,3 +222,31 @@ exports.uploadPayment = async (req, res) => {
     res.status(500).send(err)
   }
 }
+
+exports.uploadLearnerIdCardRestore = async (req, res) => {
+  try {
+    const image = await req.file
+    if (!image) {
+      return res.status(400).send({
+        message: 'No file is selected.'
+      })
+    }
+
+    const fileName = getFileName(req.body.name, image)
+
+    const inputFile = `${process.env.COMPRESS_TEMP_FOLDER}/${fileName}`
+    const outputFile = `${process.env.LEARNER_ID_FOLDER}/${fileName}`
+
+    fs.rename(inputFile, outputFile, () =>
+      res.send({
+        message: 'Document uploaded successfully',
+        inputFile,
+        outputFile
+      })
+    )
+  } catch (err) {
+    console.log(err)
+    log.error(err)
+    res.status(500).send(err)
+  }
+}

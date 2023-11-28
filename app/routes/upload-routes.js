@@ -32,6 +32,12 @@ module.exports = async (app) => {
     controller.uploadLearnerIdCard
   )
 
+  router.post(
+    `${process.env.LEARNER_ID_ENDPOINT}/restore`,
+    upload.single('file'),
+    controller.uploadLearnerIdCardRestore
+  )
+
   // FOET
 
   router.get(
