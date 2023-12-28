@@ -30,14 +30,16 @@ require('./routes')(app)
 const PORT = process.env.PORT || 3010
 
 app.listen(PORT, () => {
-  log.info(`Server is running on port ${PORT}.`)
+  console.log(`Server is running on port ${PORT}.`)
 })
 
 const emailService = new EmailService()
 
 if (process.env.NODE_ENV !== 'production') {
   listEndpoints(app, '')
-  console.log(process.env.NODE_ENV)
+  log.info(process.env.NODE_ENV || 'development')
+} else {
+  log.error(process.env.NODE_ENV)
 }
 
 emailService.on('emailSent', (email) => {
